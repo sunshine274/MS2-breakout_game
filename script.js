@@ -87,43 +87,6 @@ function drawBricks() {
   });
 }
 
-// Move ball
-function moveBall() {
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-
-    // Wall detection (x)
-    if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
-        ball.dx *= -1;
-    }
-
-    // Wall detection (top/bottom)
-    if(ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
-        ball.dy *= -1;
-    }
-
-    // Paddle collision
-    if( ball.x - ball.size > paddle.x && 
-        ball.x + ball.size < paddle.x + paddle.w &&
-        ball.y + ball.size > paddle.y
-        ) {ball.dy = -ball.speed;}
-
-        // Brick collision
-        bricks.forEach( column => {
-            column.forEach(brick => {
-                if(brick.visible) {
-                    if(ball.x - ball.size > brick.x && 
-                        ball.x + ball.size < brick.x + brick.w &&
-                        ball.y + ball.size > brick.y &&
-                        ball.y - ball.size < brick.y + brick.h ){
-                            ball.dy *= -1;
-                            brick.visible = false;
-                        }
-                }
-            })
-        })
-}
-
 // Move paddle on canvas
 function movePaddle() {
   paddle.x += paddle.dx;
@@ -136,6 +99,71 @@ function movePaddle() {
   if (paddle.x < 0) {
     paddle.x = 0;
   }
+}
+
+// Move ball
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Wall detection (x)
+  if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+    ball.dx *= -1;
+  }
+
+  // Wall detection (top/bottom)
+  if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+    ball.dy *= -1;
+  }
+
+  // Paddle collision
+  if (
+    ball.x - ball.size > paddle.x &&
+    ball.x + ball.size < paddle.x + paddle.w &&
+    ball.y + ball.size > paddle.y
+  ) {
+    ball.dy = -ball.speed;
+  }
+
+  // Brick collision
+  bricks.forEach((column) => {
+    column.forEach((brick) => {
+      if (brick.visible) {
+        if (
+          ball.x - ball.size > brick.x &&
+          ball.x + ball.size < brick.x + brick.w &&
+          ball.y + ball.size > brick.y &&
+          ball.y - ball.size < brick.y + brick.h
+        ) {
+          ball.dy *= -1;
+          brick.visible = false;
+
+          increaseScore();
+        }
+      }
+    });
+  });
+  // Hit bottome wall - lose
+  if (ball.y + ball.size > canvas.height) {
+    showAllBricks();
+    score = 0;
+  }
+}
+
+// Increase score
+function increaseScore() {
+  score++;
+
+  if (score % (brickRowCount * brickRowCount) === 0) {
+    showAllBricks();
+  }
+}
+
+// Show all bricks
+function showAllBricks() {
+  bricks.forEach((column) => {
+    column.forEach((brick) => (brick.visible = true));
+  });
 }
 
 // Draw everything
