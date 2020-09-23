@@ -10,6 +10,26 @@ let score = 0;
 const brickRowCount = 9;
 const brickColumnCount = 5;
 
+
+// Pause button
+
+function togglePause(){
+    if(!paused){
+        paused = true;
+    } else if (paused) {
+        paused = false;
+    }
+}
+
+// Pause event handler
+window.addEventListener('keydown',function(e){
+    let key = e.keyCode;
+    if (key === 80)// key
+    {
+        togglePause();
+    }
+});
+
 // Create ball properties
 const ball = {
   x: canvas.width / 2,
@@ -189,6 +209,13 @@ function update() {
 
 update();
 
+function mouseMoveHandler(e) {
+    let relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
+    }
+}
+
 // Keydown event
 function keyDown(e) {
   if (e.key === "Right" || e.key === "ArrowRight") {
@@ -207,9 +234,18 @@ function keyUp(e) {
   }
 }
 
+// Move paddle through mouse
+function mouseMoveHandler(e){
+    let relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width){
+        paddle.x = relativeX - paddle.w/2;
+    }
+}
+
 // Keyboard event handlers
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
+document.addEventListener('mousemove', mouseMoveHandler)
 
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
