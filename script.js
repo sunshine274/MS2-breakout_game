@@ -17,7 +17,7 @@ const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 4,
+  speed: 2,
   dx: 4,
   dy: -4,
 };
@@ -73,8 +73,14 @@ function drawPaddle() {
 
 // Draw score on canvas
 function drawScore() {
-  ctx.font = "20px Arial";
+  ctx.font = "20px Montserrat";
   ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
+}
+
+// Draw Life on canvas
+function drawLIFE() {
+  ctx.font = "20px Montserrat";
+  ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
 }
 
 // Draw bricks on canvas
@@ -146,10 +152,12 @@ function moveBall() {
       }
     });
   });
-  // Hit bottome wall - lose
+  // Hit bottom wall - lose a life
   if (ball.y + ball.size > canvas.height) {
     showAllBricks();
     score = 0;
+    LIFE--;
+    resetBall();
   }
 }
 
@@ -169,6 +177,14 @@ function showAllBricks() {
   });
 }
 
+// Reset the ball
+function resetBall() {
+  ball.x = canvas.width / 2;
+  ball.y = paddle.y - paddleMargin;
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+}
+
 // Draw everything
 function draw() {
   // Clear canvas
@@ -177,8 +193,8 @@ function draw() {
   drawBall();
   drawPaddle();
   drawScore();
+  drawLIFE();
   drawBricks();
-
 }
 
 function update() {
@@ -190,28 +206,32 @@ function update() {
   requestAnimationFrame(update);
 }
 
-update();
-
-
-function mouseMoveHandler(e) {
-    let relativeX = e.clientX - canvas.offsetLeft;
-    if(relativeX > 0 && relativeX < canvas.width) {
-        paddleX = relativeX - paddleWidth/2;
-    }
+function loop() {
+  draw();
+  update();
 }
 
+loop();
+
+// function mouseMoveHandler(e) {
+//     let relativeX = e.clientX - canvas.offsetLeft;
+//     if(relativeX > 0 && relativeX < canvas.width) {
+//         paddleX = relativeX - paddleWidth/2;
+//     }
+// }
+
 // Move paddle through mouse
-function mouseMoveHandler(e){
-    let relativeX = e.clientX - canvas.offsetLeft;
-    if(relativeX > 0 && relativeX < canvas.width){
-        paddle.x = relativeX - paddle.w/2;
-    }
+function mouseMoveHandler(e) {
+  let relativeX = e.clientX - canvas.offsetLeft;
+  if (relativeX > 0 && relativeX < canvas.width) {
+    paddle.x = relativeX - paddle.w / 2;
+  }
 }
 
 // Keyboard event handlers
 // document.addEventListener("keydown", keyDown);
 // document.addEventListener("keyup", keyUp);
-document.addEventListener('mousemove', mouseMoveHandler);
+document.addEventListener("mousemove", mouseMoveHandler);
 
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
