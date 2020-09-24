@@ -4,31 +4,27 @@ const rules = document.getElementById("rules");
 const startBtn = document.getElementById('start-btn');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const paddleMargin = 50;
+const paused = false;
 
 let score = 0;
+let LIFE = 3;
 
 const brickRowCount = 9;
 const brickColumnCount = 5;
 
 
-// Pause button
-
-function togglePause(){
-    if(!paused){
-        paused = true;
-    } else if (paused) {
-        paused = false;
-    }
-}
+// function togglePause(){
+//     if(!paused){
+//         paused = true;
+//     } else if (paused) {
+//         paused = false;
+//     }
+// }
 
 // Pause event handler
-window.addEventListener('keydown',function(e){
-    let key = e.keyCode;
-    if (key === 80)// key
-    {
-        togglePause();
-    }
-});
+// startBtn.addEventListener('click',
+//         togglePause());
 
 // Create ball properties
 const ball = {
@@ -43,7 +39,7 @@ const ball = {
 // Create paddle properties
 const paddle = {
   x: canvas.width / 2 - 40,
-  y: canvas.height - 20,
+  y: canvas.height - 20 - paddleMargin,
   w: 80,
   h: 10,
   speed: 8,
@@ -196,6 +192,7 @@ function draw() {
   drawPaddle();
   drawScore();
   drawBricks();
+
 }
 
 function update() {
@@ -203,11 +200,17 @@ function update() {
   moveBall();
   //Draw everything
   draw();
+  
+// if(!paused)
+// { 
+// update(); 
+// }
 
   requestAnimationFrame(update);
 }
 
 update();
+
 
 function mouseMoveHandler(e) {
     let relativeX = e.clientX - canvas.offsetLeft;
@@ -217,22 +220,22 @@ function mouseMoveHandler(e) {
 }
 
 // Keydown event
-function keyDown(e) {
-  if (e.key === "Right" || e.key === "ArrowRight") {
-    paddle.dx = paddle.speed;
-  } else if (e.key === "Left" || e.key === "ArrowLeft") {
-    paddle.dx = -paddle.speed;
-  }
-}
+// function keyDown(e) {
+//   if (e.key === "Right" || e.key === "ArrowRight") {
+//     paddle.dx = paddle.speed;
+//   } else if (e.key === "Left" || e.key === "ArrowLeft") {
+//     paddle.dx = -paddle.speed;
+//   }
+// }
 
-// Keyup event
-function keyUp(e) {
-  if (e.key === "Left" || e.key === "ArrowLeft") {
-    paddle.dx = paddle.speed;
-  } else if (e.key === "Right" || e.key === "ArrowLeft") {
-    paddle.dx = 0;
-  }
-}
+// // Keyup event
+// function keyUp(e) {
+//   if (e.key === "Left" || e.key === "ArrowLeft") {
+//     paddle.dx = paddle.speed;
+//   } else if (e.key === "Right" || e.key === "ArrowLeft") {
+//     paddle.dx = 0;
+//   }
+// }
 
 // Move paddle through mouse
 function mouseMoveHandler(e){
@@ -243,9 +246,9 @@ function mouseMoveHandler(e){
 }
 
 // Keyboard event handlers
-document.addEventListener("keydown", keyDown);
-document.addEventListener("keyup", keyUp);
-document.addEventListener('mousemove', mouseMoveHandler)
+// document.addEventListener("keydown", keyDown);
+// document.addEventListener("keyup", keyUp);
+document.addEventListener('mousemove', mouseMoveHandler);
 
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
