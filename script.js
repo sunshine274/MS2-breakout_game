@@ -1,7 +1,6 @@
 const rulesBtn = document.getElementById("rules-btn");
 const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
-const startBtn = document.getElementById('start-btn');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const paddleMargin = 50;
@@ -12,19 +11,6 @@ let LIFE = 3;
 
 const brickRowCount = 9;
 const brickColumnCount = 5;
-
-
-// function togglePause(){
-//     if(!paused){
-//         paused = true;
-//     } else if (paused) {
-//         paused = false;
-//     }
-// }
-
-// Pause event handler
-// startBtn.addEventListener('click',
-//         togglePause());
 
 // Create ball properties
 const ball = {
@@ -71,7 +57,7 @@ for (let i = 0; i < brickRowCount; i++) {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
-  ctx.fillStyle = "#0095dd";
+  ctx.fillStyle = "gold";
   ctx.fill();
   ctx.closePath();
 }
@@ -80,7 +66,7 @@ function drawBall() {
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
-  ctx.fillStyle = "#0095dd";
+  ctx.fillStyle = "grey";
   ctx.fill();
   ctx.closePath();
 }
@@ -97,7 +83,7 @@ function drawBricks() {
     column.forEach((brick) => {
       ctx.beginPath();
       ctx.rect(brick.x, brick.y, brick.w, brick.h);
-      ctx.fillStyle = brick.visible ? "#0095dd" : "transparent";
+      ctx.fillStyle = brick.visible ? "grey" : "transparent";
       ctx.fill();
       ctx.closePath();
     });
@@ -200,11 +186,6 @@ function update() {
   moveBall();
   //Draw everything
   draw();
-  
-// if(!paused)
-// { 
-// update(); 
-// }
 
   requestAnimationFrame(update);
 }
@@ -218,24 +199,6 @@ function mouseMoveHandler(e) {
         paddleX = relativeX - paddleWidth/2;
     }
 }
-
-// Keydown event
-// function keyDown(e) {
-//   if (e.key === "Right" || e.key === "ArrowRight") {
-//     paddle.dx = paddle.speed;
-//   } else if (e.key === "Left" || e.key === "ArrowLeft") {
-//     paddle.dx = -paddle.speed;
-//   }
-// }
-
-// // Keyup event
-// function keyUp(e) {
-//   if (e.key === "Left" || e.key === "ArrowLeft") {
-//     paddle.dx = paddle.speed;
-//   } else if (e.key === "Right" || e.key === "ArrowLeft") {
-//     paddle.dx = 0;
-//   }
-// }
 
 // Move paddle through mouse
 function mouseMoveHandler(e){
