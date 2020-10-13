@@ -213,13 +213,6 @@ function loop() {
 
 loop();
 
-// function mouseMoveHandler(e) {
-//     let relativeX = e.clientX - canvas.offsetLeft;
-//     if(relativeX > 0 && relativeX < canvas.width) {
-//         paddleX = relativeX - paddleWidth/2;
-//     }
-// }
-
 // Move paddle through mouse
 function mouseMoveHandler(e) {
   let relativeX = e.clientX - canvas.offsetLeft;
