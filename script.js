@@ -166,6 +166,7 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size > canvas.height) {
+      loseLife.play();
     showAllBricks();
     score = 0;
     LIFE--;
@@ -245,3 +246,11 @@ document.addEventListener("mousemove", mouseMoveHandler);
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
 closeBtn.addEventListener("click", () => rules.classList.remove("show"));
+
+// adding sounds
+const hitWall = new Audio("sounds/hit-wall.mp3");
+const hitPaddle = new Audio("sounds/hit-paddle.mp3");
+const hitBrick = new Audio("sounds/hit-brick.mp3");
+const win = new Audio("sounds/win.mp3");
+const gameOver = new Audio("sounds/game-over.mp3");
+const loseLife = new Audio("sounds/lose-life.mp3");
