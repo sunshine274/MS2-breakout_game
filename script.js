@@ -42,16 +42,22 @@ const brickInfo = {
   visible: true,
 };
 
-// Create bricks
-const bricks = [];
-for (let i = 0; i < brickRowCount; i++) {
-  bricks[i] = [];
-  for (let j = 0; j < brickColumnCount; j++) {
-    const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-    const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-    bricks[i][j] = { x, y, ...brickInfo };
+// Create bricks : positions and status
+function createBricks() {
+  const bricks = [];
+  for (let r = 0; r < brickRowCount; r++) {
+    bricks[r] = [];
+    for (let c = 0; c < brickColumnCount; c++) {
+      bricks[r][c] = {
+        x: r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX,
+        y: c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY,
+        status: true,
+      };
+    }
   }
 }
+
+createBricks();
 
 // Draw ball on canvas
 function drawBall() {
@@ -202,13 +208,13 @@ function update() {
   moveBall();
   //Draw everything
   draw();
-
-  requestAnimationFrame(update);
 }
 
 function loop() {
   draw();
   update();
+
+  requestAnimationFrame(loop);
 }
 
 loop();
@@ -221,9 +227,6 @@ function mouseMoveHandler(e) {
   }
 }
 
-// Keyboard event handlers
-// document.addEventListener("keydown", keyDown);
-// document.addEventListener("keyup", keyUp);
 document.addEventListener("mousemove", mouseMoveHandler);
 
 // Rules and close event handlers
