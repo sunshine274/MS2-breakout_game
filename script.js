@@ -5,9 +5,12 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const paddleMargin = 50;
 const paused = false;
+const bricks = [];
+const lifeLimit = 3;
 
 let score = 0;
 let LIFE = 3;
+
 
 const brickRowCount = 9;
 const brickColumnCount = 5;
@@ -43,21 +46,24 @@ const brickInfo = {
 };
 
 // Create bricks : positions and status
-function createBricks() {
-  const bricks = [];
+  
   for (let r = 0; r < brickRowCount; r++) {
     bricks[r] = [];
     for (let c = 0; c < brickColumnCount; c++) {
+        const x = r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+        const y = c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+const status = true;
       bricks[r][c] = {
-        x: r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX,
-        y: c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY,
-        status: true,
+        x, 
+        y,
+        status,
+        ...brickInfo
       };
     }
   }
-}
 
-createBricks();
+
+
 
 // Draw ball on canvas
 function drawBall() {
@@ -164,6 +170,7 @@ function moveBall() {
     score = 0;
     LIFE--;
     resetBall();
+    resetPaddle();
   }
 }
 
@@ -191,6 +198,11 @@ function resetBall() {
   ball.y += ball.dy;
 }
 
+function resetPaddle() {
+    paddle.x = canvas.width/2 + paddle.width/2;
+    paddle.y = canvas.height - 20 - paddleMargin;
+}
+
 // Draw everything
 function draw() {
   // Clear canvas
@@ -198,6 +210,7 @@ function draw() {
 
   drawBall();
   drawPaddle();
+  
   drawScore();
   drawLIFE();
   drawBricks();
