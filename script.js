@@ -3,14 +3,15 @@ const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const paddleMargin = 50;
+const paddleWidth = 40;
+const paddleHeight = 20;
 const paused = false;
 const bricks = [];
 const lifeLimit = 3;
 
 let score = 0;
 let LIFE = 3;
-
+let GAMEOVER = false;
 
 const brickRowCount = 9;
 const brickColumnCount = 5;
@@ -27,10 +28,10 @@ const ball = {
 
 // Create paddle properties
 const paddle = {
-  x: canvas.width / 2 - 40,
-  y: canvas.height - 20 - paddleMargin,
-  w: 80,
-  h: 10,
+  x: canvas.width / 2 - paddleWidth/2,
+  y: canvas.height - paddleHeight,
+  w: paddleWidth,
+  h: paddleHeight,
   speed: 8,
   dx: 0,
 };
@@ -46,24 +47,21 @@ const brickInfo = {
 };
 
 // Create bricks : positions and status
-  
-  for (let r = 0; r < brickRowCount; r++) {
-    bricks[r] = [];
-    for (let c = 0; c < brickColumnCount; c++) {
-        const x = r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-        const y = c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-const status = true;
-      bricks[r][c] = {
-        x, 
-        y,
-        status,
-        ...brickInfo
-      };
-    }
+
+for (let r = 0; r < brickRowCount; r++) {
+  bricks[r] = [];
+  for (let c = 0; c < brickColumnCount; c++) {
+    const x = r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+    const y = c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+    const status = true;
+    bricks[r][c] = {
+      x,
+      y,
+      status,
+      ...brickInfo,
+    };
   }
-
-
-
+}
 
 // Draw ball on canvas
 function drawBall() {
@@ -118,6 +116,7 @@ function movePaddle() {
   }
 
   if (paddle.x < 0) {
+    hitWall.play();
     paddle.x = 0;
   }
 }
@@ -129,11 +128,14 @@ function moveBall() {
 
   // Wall detection (x)
   if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+    hitWall.play();
     ball.dx *= -1;
+    
   }
 
   // Wall detection (top/bottom)
   if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+    hitWall.play();
     ball.dy *= -1;
   }
 
@@ -143,6 +145,7 @@ function moveBall() {
     ball.x + ball.size < paddle.x + paddle.w &&
     ball.y + ball.size > paddle.y
   ) {
+    hitPaddle.play();
     ball.dy = -ball.speed;
   }
 
@@ -158,7 +161,7 @@ function moveBall() {
         ) {
           ball.dy *= -1;
           brick.visible = false;
-
+          hitBrick.play();
           increaseScore();
         }
       }
@@ -166,12 +169,16 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size > canvas.height) {
+    if (LIFE >= 0) {
       loseLife.play();
-    showAllBricks();
-    score = 0;
-    LIFE--;
-    resetBall();
-    resetPaddle();
+      showAllBricks();
+      score = 0;
+      LIFE--;
+      resetBall();
+      resetPaddle();
+    } else if (LIFE < 0){
+      GAMEOVER = true;
+    }
   }
 }
 
@@ -200,9 +207,20 @@ function resetBall() {
 }
 
 function resetPaddle() {
-    paddle.x = canvas.width/2 + paddle.width/2;
-    paddle.y = canvas.height - 20 - paddleMargin;
+  paddle.x = canvas.width / 2 + paddle.width / 2;
+  paddle.y = canvas.height - 20 - paddleMargin;
+  paddle.x += paddle.dx;
 }
+
+// function showGameOver(){
+
+// }
+
+// function gameOver() {
+//   if (GAMEOVER) {
+//     ;
+//   }
+// }
 
 // Draw everything
 function draw() {
@@ -211,7 +229,7 @@ function draw() {
 
   drawBall();
   drawPaddle();
-  
+
   drawScore();
   drawLIFE();
   drawBricks();
@@ -227,8 +245,9 @@ function update() {
 function loop() {
   draw();
   update();
-
-  requestAnimationFrame(loop);
+  if (!GAMEOVER) {
+    requestAnimationFrame(loop);
+  }
 }
 
 loop();
@@ -252,5 +271,5 @@ const hitWall = new Audio("sounds/hit-wall.mp3");
 const hitPaddle = new Audio("sounds/hit-paddle.mp3");
 const hitBrick = new Audio("sounds/hit-brick.mp3");
 const win = new Audio("sounds/win.mp3");
-const gameOver = new Audio("sounds/game-over.mp3");
+const gameIsOver = new Audio("sounds/game-over.mp3");
 const loseLife = new Audio("sounds/lose-life.mp3");
