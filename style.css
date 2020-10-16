@@ -75,3 +75,38 @@ canvas {
 .rules.show {
     transform: translateX(0);
 }
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);transition: 200ms ease-in-out;
+    border: 1px solid coral;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: skyblue;
+    width: 30%;
+}
+
+.modal.active{
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#start-again{
+    font-size: 1rem;
+}
+
+#overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    pointer-events: none;
+}
+
+#overlay.active{
+    opacity: 1;
+    pointer-events: all;
+}

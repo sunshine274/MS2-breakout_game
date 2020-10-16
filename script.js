@@ -3,11 +3,12 @@ const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const paddleWidth = 40;
+const paddleWidth = 80;
 const paddleHeight = 20;
 const paused = false;
 const bricks = [];
 const lifeLimit = 3;
+
 
 let score = 0;
 let LIFE = 3;
@@ -83,13 +84,13 @@ function drawPaddle() {
 
 // Draw score on canvas
 function drawScore() {
-  ctx.font = "20px Montserrat";
+  ctx.font = "20px 'Bungee Shade'";
   ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
 }
 
 // Draw Life on canvas
 function drawLIFE() {
-  ctx.font = "20px Montserrat";
+  ctx.font = "20px 'Bungee Shade'";
   ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
 }
 
@@ -201,14 +202,14 @@ function showAllBricks() {
 // Reset the ball
 function resetBall() {
   ball.x = canvas.width / 2;
-  ball.y = paddle.y - paddleMargin;
+  ball.y = paddle.y;
   ball.x += ball.dx;
   ball.y += ball.dy;
 }
 
 function resetPaddle() {
   paddle.x = canvas.width / 2 + paddle.width / 2;
-  paddle.y = canvas.height - 20 - paddleMargin;
+  paddle.y = canvas.height - paddleHeight;
   paddle.x += paddle.dx;
 }
 
@@ -273,3 +274,11 @@ const hitBrick = new Audio("sounds/hit-brick.mp3");
 const win = new Audio("sounds/win.mp3");
 const gameIsOver = new Audio("sounds/game-over.mp3");
 const loseLife = new Audio("sounds/lose-life.mp3");
+
+// gameover modal
+const modalElement = document.getElementById("modal");
+const closeModal = document.getElementById("close-modal");
+const overlay = document.getElementById("overlay");
+
+
+
