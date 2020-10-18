@@ -15,7 +15,7 @@ let LIFE = 3;
 let GAMEOVER = false;
 
 const brickRowCount = 9;
-const brickColumnCount = 5;
+const brickColumnCount = 3;
 
 // Create ball properties
 const ball = {
@@ -85,7 +85,7 @@ function drawPaddle() {
 // Draw score on canvas
 function drawScore() {
   ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
+  ctx.fillText(`Score: ${score}`, canvas.width - 200, 30);
 }
 
 // Draw Life on canvas
@@ -170,15 +170,15 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size > canvas.height) {
-    if (LIFE >= 0) {
+    if (LIFE > 0) {
       loseLife.play();
       showAllBricks();
       score = 0;
       LIFE--;
       resetBall();
       resetPaddle();
-    } else if (LIFE < 0){
-      GAMEOVER = true;
+    } else if (LIFE <= 0){
+      gameOver();
     }
   }
 }
@@ -276,9 +276,22 @@ const gameIsOver = new Audio("sounds/game-over.mp3");
 const loseLife = new Audio("sounds/lose-life.mp3");
 
 // gameover modal
-const modalElement = document.getElementById("modal");
-const closeModal = document.getElementById("close-modal");
+const modalWin = document.getElementById("modal-win");
+const modalLose = document.getElementById("modal-lose")
 const overlay = document.getElementById("overlay");
 
+function showYouWin(){
+    modalWin.style.display = "block"
+}
 
+function showYouLose() {
+    modalLose.style.display = "block"
+}
 
+function gameOver(){
+    if(LIFE<=0){
+        showYouLose();
+        GAMEOVER = true;
+        gameIsOver.play();
+    }
+}

@@ -92,17 +92,22 @@ canvas {
     transform: translate(-50%, -50%) scale(1);
 }
 
-#start-again{
+.close-modal{
+    float: right;
+}
+
+.start-again{
     font-size: 1rem;
 }
 
+/*
 #overlay{
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: #000;
+    background: rgba(0,0,0,.5);
     pointer-events: none;
 }
 
@@ -110,3 +115,6 @@ canvas {
     opacity: 1;
     pointer-events: all;
 }
+
+*/
+

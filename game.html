@@ -22,16 +22,21 @@
 
 <canvas id="canvas" width="800" height="600"></canvas>
 
-<div class="modal" id="modal">
+<div class="modal" id="modal-win">
 <button class="btn" id="youwin">You Win</button>
-<button class="btn" id="gameover">Game Over</button>
-<button id="close-modal"></button>
-
-<a href="index.html"><button type="button" class="btn btn-light btn-lg" id="start-again">Start Again</button></a>
-
+<button class="close-modal"></button>
+<a href="index.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
 </div>
 
-<div id="overlay"></div>
+
+<div class="modal" id="modal-lose">
+<button class="btn" id="gameover">Game Over</button>
+<button class="close-modal"></button>
+<a href="index.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
+</div>
+
+
+<!-- <div id="overlay"></div> --> 
 
 <script src="script.js"></script>
 </body>
