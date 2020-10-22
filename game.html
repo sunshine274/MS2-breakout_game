@@ -13,12 +13,14 @@
     <div class="rules" id="rules">
       <h2>How To Play:</h2>
       <p>
-        Use your left and right keys to move the paddle to bounce the ball up
+        Use your mouse to move the paddle to bounce the ball up
         and break the blocks.
       </p>
-      <p>If you miss the ball, your score and the blocks will reset.</p>
+      <p>If you miss the ball, your score and the blocks will reset. You have three lives.</p>
       <button id="close-btn" class="close-btn">Close</button>
     </div>
+
+    <button type="button" class="btn btn-light" id="pause-btn" onclick="pause();">Pause/Start</button>
 
 <canvas id="canvas" width="800" height="600"></canvas>
 
@@ -29,7 +31,7 @@
             <h3 class="modal-title">You WIN!</h3>
           </div>
           <div class="modal-body">
-            <a href="index.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
+            <a href="game.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
           </div>
         </div>
     </div>
@@ -42,7 +44,7 @@
             <h3 class="modal-title">Game Over</h3>
           </div>
           <div class="modal-body">
-            <a href="index.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
+            <a href="game.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
           </div>
         </div>
     </div>

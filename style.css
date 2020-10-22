@@ -25,6 +25,10 @@ h1 {
     color: #fff;
 }
 
+button#pause-btn{
+    margin: 20px;
+}
+
 canvas {
     background: #f0f0f0;
     display: block;
@@ -45,7 +49,7 @@ canvas {
 }
 
 .btn:hover {
-    background: #222;
+    background: gold;
 }
 
 .btn:active {
