@@ -3,25 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js">
     <link rel="stylesheet" href="./style.css" />
     <title>Breakout Game</title>
   </head>
   <body>
-    <h1>Break Out</h1>
-    <button id="rules-btn" class="btn rules-btn">Show Rules</button>
-    <div class="rules" id="rules">
-      <h2>How To Play:</h2>
+    <div class="text-container">
+      <h1>Welcome!</h1>
       <p>
-        Use your left and right keys to move the paddle to bounce the ball up
-        and break the blocks.
+        Simply control the ball with your mouse and use the paddle to shoot all
+        the obastacles that block your way to your dream!
       </p>
-      <p>If you miss the ball, your score and the blocks will reset.</p>
-      <button id="close-btn" class="close-btn">Close</button>
+      <a href="game.html"><button type="button" class="btn btn-lg">Start</button></a>
     </div>
 
-<button id="start-btn" onclick="initialize">Start</button>
-
-<canvas id="canvas" width="800" height="600"></canvas>
 
     <script src="./script.js"></script>
   </body>

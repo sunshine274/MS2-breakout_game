@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js">
+    <link rel="stylesheet" href="style.css">
+    <title>Break the Obstacles!</title>
+</head>
+<body>
+      <h1>Break Out</h1>
+    <button id="rules-btn" class="btn rules-btn">Show Rules</button>
+    <div class="rules" id="rules">
+      <h2>How To Play:</h2>
+      <p>
+        Use your left and right keys to move the paddle to bounce the ball up
+        and break the blocks.
+      </p>
+      <p>If you miss the ball, your score and the blocks will reset.</p>
+      <button id="close-btn" class="close-btn">Close</button>
+    </div>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<div class="modal" id="modal-win">
+<button class="btn" id="youwin">You Win</button>
+<button class="close-modal"></button>
+<a href="index.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
+</div>
+
+
+<div class="modal" id="modal-lose">
+<button class="btn" id="gameover">Game Over</button>
+<button class="close-modal"></button>
+<a href="index.html"><button type="button" class="btn btn-light btn-lg start-again">Start Again</button></a>
+</div>
+
+
+<!-- <div id="overlay"></div> --> 
+
+<script src="script.js"></script>
+</body>
+</html>

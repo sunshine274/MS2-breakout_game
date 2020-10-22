@@ -1,31 +1,38 @@
 const rulesBtn = document.getElementById("rules-btn");
 const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
-const startBtn = document.getElementById('start-btn');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const paddleWidth = 80;
+const paddleHeight = 20;
+const paused = false;
+const bricks = [];
+const lifeLimit = 3;
+
 
 let score = 0;
+let LIFE = 3;
+let GAMEOVER = false;
 
 const brickRowCount = 9;
-const brickColumnCount = 5;
+const brickColumnCount = 3;
 
 // Create ball properties
 const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 4,
+  speed: 2,
   dx: 4,
   dy: -4,
 };
 
 // Create paddle properties
 const paddle = {
-  x: canvas.width / 2 - 40,
-  y: canvas.height - 20,
-  w: 80,
-  h: 10,
+  x: canvas.width / 2 - paddleWidth/2,
+  y: canvas.height - paddleHeight,
+  w: paddleWidth,
+  h: paddleHeight,
   speed: 8,
   dx: 0,
 };
@@ -40,14 +47,20 @@ const brickInfo = {
   visible: true,
 };
 
-// Create bricks
-const bricks = [];
-for (let i = 0; i < brickRowCount; i++) {
-  bricks[i] = [];
-  for (let j = 0; j < brickColumnCount; j++) {
-    const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-    const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-    bricks[i][j] = { x, y, ...brickInfo };
+// Create bricks : positions and status
+
+for (let r = 0; r < brickRowCount; r++) {
+  bricks[r] = [];
+  for (let c = 0; c < brickColumnCount; c++) {
+    const x = r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+    const y = c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+    const status = true;
+    bricks[r][c] = {
+      x,
+      y,
+      status,
+      ...brickInfo,
+    };
   }
 }
 
@@ -55,7 +68,7 @@ for (let i = 0; i < brickRowCount; i++) {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
-  ctx.fillStyle = "#0095dd";
+  ctx.fillStyle = "gold";
   ctx.fill();
   ctx.closePath();
 }
@@ -64,15 +77,21 @@ function drawBall() {
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
-  ctx.fillStyle = "#0095dd";
+  ctx.fillStyle = "grey";
   ctx.fill();
   ctx.closePath();
 }
 
 // Draw score on canvas
 function drawScore() {
-  ctx.font = "20px Arial";
-  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
+  ctx.font = "20px 'Bungee Shade'";
+  ctx.fillText(`Score: ${score}`, canvas.width - 200, 30);
+}
+
+// Draw Life on canvas
+function drawLIFE() {
+  ctx.font = "20px 'Bungee Shade'";
+  ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
 }
 
 // Draw bricks on canvas
@@ -81,7 +100,7 @@ function drawBricks() {
     column.forEach((brick) => {
       ctx.beginPath();
       ctx.rect(brick.x, brick.y, brick.w, brick.h);
-      ctx.fillStyle = brick.visible ? "#0095dd" : "transparent";
+      ctx.fillStyle = brick.visible ? "grey" : "transparent";
       ctx.fill();
       ctx.closePath();
     });
@@ -98,6 +117,7 @@ function movePaddle() {
   }
 
   if (paddle.x < 0) {
+    hitWall.play();
     paddle.x = 0;
   }
 }
@@ -109,11 +129,14 @@ function moveBall() {
 
   // Wall detection (x)
   if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+    hitWall.play();
     ball.dx *= -1;
+    
   }
 
   // Wall detection (top/bottom)
   if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+    hitWall.play();
     ball.dy *= -1;
   }
 
@@ -123,6 +146,7 @@ function moveBall() {
     ball.x + ball.size < paddle.x + paddle.w &&
     ball.y + ball.size > paddle.y
   ) {
+    hitPaddle.play();
     ball.dy = -ball.speed;
   }
 
@@ -138,16 +162,24 @@ function moveBall() {
         ) {
           ball.dy *= -1;
           brick.visible = false;
-
+          hitBrick.play();
           increaseScore();
         }
       }
     });
   });
-  // Hit bottome wall - lose
+  // Hit bottom wall - lose a life
   if (ball.y + ball.size > canvas.height) {
-    showAllBricks();
-    score = 0;
+    if (LIFE > 0) {
+      loseLife.play();
+      showAllBricks();
+      score = 0;
+      LIFE--;
+      resetBall();
+      resetPaddle();
+    } else if (LIFE <= 0){
+      gameOver();
+    }
   }
 }
 
@@ -167,6 +199,30 @@ function showAllBricks() {
   });
 }
 
+// Reset the ball
+function resetBall() {
+  ball.x = canvas.width / 2;
+  ball.y = paddle.y;
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+}
+
+function resetPaddle() {
+  paddle.x = canvas.width / 2 + paddle.width / 2;
+  paddle.y = canvas.height - paddleHeight;
+  paddle.x += paddle.dx;
+}
+
+// function showGameOver(){
+
+// }
+
+// function gameOver() {
+//   if (GAMEOVER) {
+//     ;
+//   }
+// }
+
 // Draw everything
 function draw() {
   // Clear canvas
@@ -174,7 +230,9 @@ function draw() {
 
   drawBall();
   drawPaddle();
+
   drawScore();
+  drawLIFE();
   drawBricks();
 }
 
@@ -183,34 +241,57 @@ function update() {
   moveBall();
   //Draw everything
   draw();
-
-  requestAnimationFrame(update);
 }
 
-update();
-
-// Keydown event
-function keyDown(e) {
-  if (e.key === "Right" || e.key === "ArrowRight") {
-    paddle.dx = paddle.speed;
-  } else if (e.key === "Left" || e.key === "ArrowLeft") {
-    paddle.dx = -paddle.speed;
+function loop() {
+  draw();
+  update();
+  if (!GAMEOVER) {
+    requestAnimationFrame(loop);
   }
 }
 
-// Keyup event
-function keyUp(e) {
-  if (e.key === "Left" || e.key === "ArrowLeft") {
-    paddle.dx = paddle.speed;
-  } else if (e.key === "Right" || e.key === "ArrowLeft") {
-    paddle.dx = 0;
+loop();
+
+// Move paddle through mouse
+function mouseMoveHandler(e) {
+  let relativeX = e.clientX - canvas.offsetLeft;
+  if (relativeX > 0 && relativeX < canvas.width) {
+    paddle.x = relativeX - paddle.w / 2;
   }
 }
 
-// Keyboard event handlers
-document.addEventListener("keydown", keyDown);
-document.addEventListener("keyup", keyUp);
+document.addEventListener("mousemove", mouseMoveHandler);
 
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
 closeBtn.addEventListener("click", () => rules.classList.remove("show"));
+
+// adding sounds
+const hitWall = new Audio("sounds/hit-wall.mp3");
+const hitPaddle = new Audio("sounds/hit-paddle.mp3");
+const hitBrick = new Audio("sounds/hit-brick.mp3");
+const win = new Audio("sounds/win.mp3");
+const gameIsOver = new Audio("sounds/game-over.mp3");
+const loseLife = new Audio("sounds/lose-life.mp3");
+
+// gameover modal
+const modalWin = document.getElementById("modal-win");
+const modalLose = document.getElementById("modal-lose")
+const overlay = document.getElementById("overlay");
+
+function showYouWin(){
+    modalWin.style.display = "block"
+}
+
+function showYouLose() {
+    modalLose.style.display = "block"
+}
+
+function gameOver(){
+    if(LIFE<=0){
+        showYouLose();
+        GAMEOVER = true;
+        gameIsOver.play();
+    }
+}
