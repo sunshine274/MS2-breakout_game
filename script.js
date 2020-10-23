@@ -91,11 +91,15 @@ function drawScore() {
 }
 
 // Draw Life on canvas
-function drawLIFE() {
+function drawLife() {
   ctx.font = "20px 'Bungee Shade'";
   ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
 }
 
+function drawLevel(){
+    ctx.font ="20px 'Bungee Shade'";
+    ctx.fillText(`Level: ${LEVEL}`, canvas.width/2 - 80, 30);
+}
 // Draw bricks on canvas
 function drawBricks() {
   bricks.forEach((column) => {
@@ -182,6 +186,7 @@ function moveBall() {
     } else if (LIFE <= 0) {
       GAMEOVER = true;
       gameOver();
+      return;
     }
   }
 }
@@ -216,14 +221,14 @@ function resetPaddle() {
   paddle.x += paddle.dx;
 }
 
-function pause(){
-    if(!paused){
-        paused = true;
-        document.getElementById("pause-btn").innerHTML = "Start";
-    } else{
-        paused = false;
-        document.getElementById("pause-btn").innerHTML = "Pause";
-    }
+function pause() {
+  if (!paused) {
+    paused = true;
+    document.getElementById("pause-btn").innerHTML = "Start";
+  } else {
+    paused = false;
+    document.getElementById("pause-btn").innerHTML = "Pause";
+  }
 }
 
 // Draw everything
@@ -235,19 +240,20 @@ function draw() {
   drawPaddle();
 
   drawScore();
-  drawLIFE();
+  drawLife();
+  drawLevel();
+
   drawBricks();
 }
 
 function update() {
-    if(!paused){
-movePaddle();
-  moveBall();
-  //Draw everything
-  draw();
-  levelUp();
-    }
-  
+  if (!paused) {
+    movePaddle();
+    moveBall();
+    //Draw everything
+    draw();
+    levelUp();
+  }
 }
 
 function loop() {
