@@ -5,8 +5,6 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const paddleWidth = 80;
 const paddleHeight = 20;
-const bricks = [];
-const lifeLimit = 3;
 
 let LEVEL = 1;
 let MAXLEVEL = 3;
@@ -14,9 +12,10 @@ let score = 0;
 let LIFE = 3;
 let paused = false;
 let GAMEOVER = false;
+let bricks = [];
 
-const brickRowCount = 9;
-const brickColumnCount = 3;
+let brickRowCount = 2;
+let brickColumnCount = 9;
 
 // Create ball properties
 const ball = {
@@ -50,11 +49,11 @@ const brickInfo = {
 
 // Create bricks : positions and status
 function createBricks() {
-  for (let r = 0; r < brickRowCount; r++) {
-    bricks[r] = [];
-    for (let c = 0; c < brickColumnCount; c++) {
-      const x = r * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-      const y = c * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+  for (let c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++) {
+      const x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+      const y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
       bricks[r][c] = {
         x,
         y,
