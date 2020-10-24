@@ -22,7 +22,7 @@ const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 2,
+  speed: 4,
   dx: 4,
   dy: -4,
 };
@@ -48,22 +48,22 @@ const brickInfo = {
 };
 
 // Create bricks : positions and status
-function createBricks() {
+
   for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (let r = 0; r < brickRowCount; r++) {
-      const x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-      const y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-      bricks[r][c] = {
+      let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+      let y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+      bricks[c][r] = {
         x,
         y,
         ...brickInfo,
       };
     }
   }
-}
 
-createBricks();
+
+
 
 // Draw ball on canvas
 function drawBall() {
@@ -194,7 +194,7 @@ function moveBall() {
 function increaseScore() {
   score += 10;
 
-  if (score % (brickRowCount * brickRowCount) === 0) {
+  if (score % (brickColumnCount * brickColumnCount) === 0) {
     showAllBricks();
   }
 }
@@ -283,11 +283,15 @@ closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 function levelUp() {
   let thisLevelDone = true;
 
-  for (let r = 0; r < brickRowCount; r++) {
-    for (let c = 0; c < brickColumnCount; c++) {
-      thisLevelDone = thisLevelDone && !bricks[r][c].visible;
-    }
-  }
+    bricks.forEach((column) => {
+    column.forEach((brick) => {thisLevelDone = thisLevelDone && !brick.visible});
+  });
+
+//   for (let c = 0; c < brickColumnCount; c++) {
+//     for (let r = 0; r < brickRowCount; r++) {
+//       thisLevelDone = thisLevelDone && !bricks[c][r].visible;
+//     }
+//   }
 
   if (thisLevelDone) {
     win.play();
@@ -296,13 +300,14 @@ function levelUp() {
       showYouWin();
       GAMEOVER = true;
       return;
-    }
-    brickRowCount += 2;
-    createBricks();
+    } 
+brickRowCount += 2;
     ball.speed += 1;
     resetBall();
     resetPaddle();
     LEVEL++;
+    }
+    
   }
 }
 
