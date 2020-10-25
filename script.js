@@ -127,6 +127,8 @@ function movePaddle() {
   }
 }
 
+const noVisibleBrickLeft = bricks.every(c => c.every(r => !r.visible));  
+
 // Move ball
 function moveBall() {
   ball.x += ball.dx;
@@ -166,7 +168,9 @@ function moveBall() {
         ) {
           ball.dy *= -1;
           brick.visible = false;
-          levelUp();
+          if(noVisibleBrickLeft){
+            levelUp();
+          }
           hitBrick.play();
           increaseScore();
         }
@@ -274,9 +278,7 @@ closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 
 // level up
 function levelUp() {
-  const thisLevelDone = bricks.every(c => c.every(r => !r.visible));  
-  if (thisLevelDone) {
-    if (LEVEL >= MAXLEVEL) {
+    if (LEVEL === MAXLEVEL) {
       showYouWin();
       return;
     }
@@ -284,9 +286,7 @@ function levelUp() {
     showAllBricks();
     resetBall();
     LEVEL++;
-  }    
 }
-
 
 // adding sounds
 const hitWall = new Audio("sounds/hit-wall.mp3");
