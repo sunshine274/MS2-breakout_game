@@ -166,6 +166,7 @@ function moveBall() {
         ) {
           ball.dy *= -1;
           brick.visible = false;
+          levelUp();
           hitBrick.play();
           increaseScore();
         }
@@ -244,8 +245,6 @@ function update() {
     moveBall();
     //Draw everything
     draw();
-
-    levelUp();
   }
 }
 
@@ -275,26 +274,18 @@ closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 
 // level up
 function levelUp() {
-    
-  const thisLevelDone = bricks.every(c => c.every(r => !r.visible));
-
+  const thisLevelDone = bricks.every(c => c.every(r => !r.visible));  
   if (thisLevelDone) {
-      console.log("hello world")
-    win.play();
-
     if (LEVEL >= MAXLEVEL) {
       showYouWin();
-      GAMEOVER = true;
       return;
-    } 
-
-brickRowCount += 2;
-    ball.speed += 1;
+    }
+    win.play();
+    showAllBricks();
     resetBall();
     LEVEL++;
-    }
-    
-  }
+  }    
+}
 
 
 // adding sounds
