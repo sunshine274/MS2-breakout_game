@@ -174,11 +174,12 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size >= canvas.height) {
+       LIFE--;
     if (LIFE >= 1) {
       loseLife.play();
       showAllBricks();
       score = 0;
-      LIFE--;
+     
       resetBall();
       GAMEOVER = false;
     } else {
