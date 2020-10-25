@@ -22,7 +22,7 @@ const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 4,
+  speed: 5,
   dx: 4,
   dy: -4,
 };
@@ -30,7 +30,7 @@ const ball = {
 // Create paddle properties
 const paddle = {
   x: canvas.width / 2 - paddleWidth / 2,
-  y: canvas.height - paddleHeight,
+  y: canvas.height - 40,
   w: paddleWidth,
   h: paddleHeight,
   speed: 8,
@@ -122,7 +122,7 @@ function movePaddle() {
   }
 
   if (paddle.x < 0) {
-    hitWall.play();
+
     paddle.x = 0;
   }
 }
@@ -174,16 +174,14 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size >= canvas.height) {
-    if (LIFE > 0) {
+    if (LIFE >= 1) {
       loseLife.play();
       showAllBricks();
       score = 0;
       LIFE--;
       resetBall();
-      resetPaddle();
       GAMEOVER = false;
-    } else if (LIFE <= 0) {
-      GAMEOVER = true;
+    } else {
       gameOver();
       return;
     }
@@ -214,11 +212,6 @@ function resetBall() {
   ball.y += ball.dy;
 }
 
-function resetPaddle() {
-  paddle.x = canvas.width / 2 + paddle.width / 2;
-  paddle.y = canvas.height - paddleHeight;
-  paddle.x += paddle.dx;
-}
 
 function pause() {
   if (!paused) {
@@ -251,6 +244,7 @@ function update() {
     moveBall();
     //Draw everything
     draw();
+
     levelUp();
   }
 }
@@ -281,19 +275,11 @@ closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 
 // level up
 function levelUp() {
-  let thisLevelDone = true;
-
-    bricks.forEach((column) => {
-    column.forEach((brick) => {thisLevelDone = thisLevelDone && !brick.visible});
-  });
-
-//   for (let c = 0; c < brickColumnCount; c++) {
-//     for (let r = 0; r < brickRowCount; r++) {
-//       thisLevelDone = thisLevelDone && !bricks[c][r].visible;
-//     }
-//   }
+    
+  const thisLevelDone = bricks.every(c => c.every(r => !r.visible));
 
   if (thisLevelDone) {
+      console.log("hello world")
     win.play();
 
     if (LEVEL >= MAXLEVEL) {
@@ -301,15 +287,15 @@ function levelUp() {
       GAMEOVER = true;
       return;
     } 
+
 brickRowCount += 2;
     ball.speed += 1;
     resetBall();
-    resetPaddle();
     LEVEL++;
     }
     
   }
-}
+
 
 // adding sounds
 const hitWall = new Audio("sounds/hit-wall.mp3");
@@ -319,10 +305,6 @@ const win = new Audio("sounds/win.mp3");
 const gameIsOver = new Audio("sounds/game-over.mp3");
 const loseLife = new Audio("sounds/lose-life.mp3");
 
-// gameover modal
-// const modalWin = document.getElementById("modal-win");
-// const modalLose = document.getElementById("modal-lose")
-// const overlay = document.getElementById("overlay");
 
 function showYouWin() {
   $("#modal-win").modal("show");
