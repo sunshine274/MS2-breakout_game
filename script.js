@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 const rulesBtn = document.getElementById("rules-btn");
 const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
@@ -127,6 +129,8 @@ function movePaddle() {
   }
 }
 
+const noVisibleBrick = bricks.every(c=> c.every(r => !r.visible));
+
 // Move ball
 function moveBall() {
   ball.x += ball.dx;
@@ -166,6 +170,9 @@ function moveBall() {
         ) {
           ball.dy *= -1;
           brick.visible = false;
+          if(noVisibleBrick){
+              levelUp();
+          }
           hitBrick.play();
           increaseScore();
         }
@@ -179,7 +186,6 @@ function moveBall() {
       loseLife.play();
       showAllBricks();
       score = 0;
-     
       resetBall();
       GAMEOVER = false;
     } else {
@@ -245,8 +251,6 @@ function update() {
     moveBall();
     //Draw everything
     draw();
-
-    levelUp();
   }
 }
 
@@ -277,23 +281,17 @@ closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 // level up
 function levelUp() {
     
-  const thisLevelDone = bricks.every(c => c.every(r => !r.visible));
-
-  if (thisLevelDone) {
-      console.log("hello world")
-    win.play();
-
-    if (LEVEL >= MAXLEVEL) {
+  if( LEVEL === MAXLEVEL){
       showYouWin();
-      GAMEOVER = true;
       return;
-    } 
-
+  }
+win.play();
+showAllBricks();
 brickRowCount += 2;
     ball.speed += 1;
     resetBall();
     LEVEL++;
-    }
+    
     
   }
 
@@ -323,3 +321,5 @@ function gameOver() {
     GAMEOVER = true;
   }
 }
+
+})
