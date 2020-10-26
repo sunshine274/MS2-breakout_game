@@ -50,8 +50,8 @@ const brickInfo = {
 };
 
 // Create bricks : positions and status
-
-  for (let c = 0; c < brickColumnCount; c++) {
+function createBricks(){
+for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (let r = 0; r < brickRowCount; r++) {
       let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
@@ -63,6 +63,8 @@ const brickInfo = {
       };
     }
   }
+}
+  
 
 
 
@@ -230,6 +232,9 @@ function pause() {
   }
 }
 
+// Start the game
+createBricks();
+
 // Draw everything
 function draw() {
   // Clear canvas
@@ -254,15 +259,15 @@ function update() {
   }
 }
 
-function loop() {
+function startGame() {
   draw();
   update();
   if (!GAMEOVER) {
-    requestAnimationFrame(loop);
+    requestAnimationFrame(startGame);
   }
 }
 
-loop();
+startGame();
 
 // Move paddle through mouse
 function mouseMoveHandler(e) {
