@@ -233,12 +233,13 @@ function pause() {
 }
 
 // Start the game
-createBricks();
+// createBricks();
 
 // Draw everything
 function draw() {
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  createBricks();
 
   drawBall();
   drawPaddle();
@@ -268,6 +269,23 @@ function startGame() {
 }
 
 startGame();
+
+function restartGame(){
+    let LEVEL = 1;
+let MAXLEVEL = 3;
+let score = 0;
+let LIFE = 3;
+let paused = false;
+let GAMEOVER = false;
+let bricks = [];
+
+let brickRowCount = 2;
+let brickColumnCount = 9;
+
+startGame()
+}
+
+
 
 // Move paddle through mouse
 function mouseMoveHandler(e) {
