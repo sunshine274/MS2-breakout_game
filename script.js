@@ -65,7 +65,7 @@ for (let c = 0; c < brickColumnCount; c++) {
   }
 }
   
-
+createBricks();
 
 
 
@@ -221,8 +221,8 @@ function resetBall() {
   ball.y += ball.dy;
 }
 
+$('#pause-btn').click(function(){
 
-function pause() {
   if (!paused) {
     paused = true;
     document.getElementById("pause-btn").innerHTML = "Start";
@@ -230,16 +230,16 @@ function pause() {
     paused = false;
     document.getElementById("pause-btn").innerHTML = "Pause";
   }
-}
 
-// Start the game
-// createBricks();
+});
+
+
 
 // Draw everything
 function draw() {
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  createBricks();
+  
 
   drawBall();
   drawPaddle();
@@ -270,20 +270,7 @@ function startGame() {
 
 startGame();
 
-function restartGame(){
-    let LEVEL = 1;
-let MAXLEVEL = 3;
-let score = 0;
-let LIFE = 3;
-let paused = false;
-let GAMEOVER = false;
-let bricks = [];
 
-let brickRowCount = 2;
-let brickColumnCount = 9;
-
-startGame()
-}
 
 
 
