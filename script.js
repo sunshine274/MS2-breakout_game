@@ -1,23 +1,32 @@
+
+const ctx = canvas.getContext("2d");
+const paddleWidth = 80;
+const paddleHeight = 20;
+const MAXLEVEL = 3;
+const BRICKROWCOUNT = 2;
+const BRICKCOLUMNCOUNT = 9;
+
+const hitWall = new Audio("sounds/hit-wall.mp3");
+const hitPaddle = new Audio("sounds/hit-paddle.mp3");
+const hitBrick = new Audio("sounds/hit-brick.mp3");
+const win = new Audio("sounds/win.mp3");
+const gameIsOver = new Audio("sounds/game-over.mp3");
+const loseLife = new Audio("sounds/lose-life.mp3");
+
+let currLevel = 1;
+let currScore = 0;
+let currLife = 3;
+let isPaused = false;
+let isGameOver = false;
+
+document.addEventListener("mousemove", mouseMoveHandler);
 const rulesBtn = document.getElementById("rules-btn");
 const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const paddleWidth = 80;
-const paddleHeight = 20;
+rulesBtn.addEventListener("click", () => rules.classList.add("show"));
+closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 
-let LEVEL = 1;
-let MAXLEVEL = 3;
-let score = 0;
-let LIFE = 3;
-let paused = false;
-let GAMEOVER = false;
-let bricks = [];
-
-let brickRowCount = 2;
-let brickColumnCount = 9;
-
-// Create ball properties
 const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
@@ -27,7 +36,6 @@ const ball = {
   dy: -4,
 };
 
-// Create paddle properties
 const paddle = {
   x: canvas.width / 2 - paddleWidth / 2,
   y: canvas.height - 40,
@@ -37,7 +45,6 @@ const paddle = {
   dx: 0,
 };
 
-// Create brick properties
 const brickInfo = {
   w: 70,
   h: 20,
@@ -47,59 +54,19 @@ const brickInfo = {
   visible: true,
 };
 
-// Create bricks : positions and status
-
-  for (let c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for (let r = 0; r < brickRowCount; r++) {
-      let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-      let y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-      bricks[c][r] = {
-        x,
-        y,
-        ...brickInfo,
-      };
-    }
+for (let c = 0; c < brickColumnCount; c++) {
+  bricks[c] = [];
+  for (let r = 0; r < brickRowCount; r++) {
+    let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+    let y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+    bricks[c][r] = {
+      x,
+      y,
+      ...brickInfo,
+    };
   }
-
-
-
-
-// Draw ball on canvas
-function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
-  ctx.fillStyle = "gold";
-  ctx.fill();
-  ctx.closePath();
 }
 
-// Draw paddle on canvas
-function drawPaddle() {
-  ctx.beginPath();
-  ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
-  ctx.fillStyle = "grey";
-  ctx.fill();
-  ctx.closePath();
-}
-
-// Draw score on canvas
-function drawScore() {
-  ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Score: ${score}`, canvas.width - 200, 30);
-}
-
-// Draw Life on canvas
-function drawLife() {
-  ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
-}
-
-function drawLevel(){
-    ctx.font ="20px 'Bungee Shade'";
-    ctx.fillText(`Level: ${LEVEL}`, canvas.width/2 - 80, 30);
-}
-// Draw bricks on canvas
 function drawBricks() {
   bricks.forEach((column) => {
     column.forEach((brick) => {
@@ -112,29 +79,78 @@ function drawBricks() {
   });
 }
 
-// Move paddle on canvas
+function initialiseBricks(){
+
+}
+
+function resetBricks(){
+
+}
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
+  ctx.fillStyle = "gold";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawPaddle() {
+  ctx.beginPath();
+  ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
+  ctx.fillStyle = "grey";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawScore() {
+  ctx.font = "20px 'Bungee Shade'";
+  ctx.fillText(`Score: ${score}`, canvas.width - 200, 30);
+}
+
+function drawLife() {
+  ctx.font = "20px 'Bungee Shade'";
+  ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
+}
+
+function drawLevel(){
+    ctx.font ="20px 'Bungee Shade'";
+    ctx.fillText(`Level: ${currLevel}`, canvas.width/2 - 80, 30);
+}
+
 function movePaddle() {
   paddle.x += paddle.dx;
-
-  // Wall detection
   if (paddle.x + paddle.w > canvas.width) {
     paddle.x = canvas.width - paddle.w;
   }
-
   if (paddle.x < 0) {
-
     paddle.x = 0;
+  }
+}
+
+function showYouWin() {
+  $("#modal-win").modal("show");
+  win.play();
+}
+
+function showYouLose() {
+  $("#modal-lose").modal("show");
+  gameIsOver.play();
+}
+
+function gameOver() {
+  if (LIFE <= 0) {
+    showYouLose();
+    GAMEOVER = true;
   }
 }
 
 const noVisibleBrickLeft = bricks.every(c => c.every(r => !r.visible));  
 
-// Move ball
 function moveBall() {
   ball.x += ball.dx;
   ball.y += ball.dy;
 
-  // Wall detection (x)
   if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
     hitWall.play();
     ball.dx *= -1;
@@ -217,50 +233,15 @@ function resetBall() {
   ball.y += ball.dy;
 }
 
-
 function pause() {
-  if (!paused) {
-    paused = true;
+  if (!isPaused) {
+    isPaused = true;
     document.getElementById("pause-btn").innerHTML = "Start";
   } else {
-    paused = false;
+    isPaused = false;
     document.getElementById("pause-btn").innerHTML = "Pause";
   }
 }
-
-// Draw everything
-function draw() {
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  drawBall();
-  drawPaddle();
-
-  drawScore();
-  drawLife();
-  drawLevel();
-
-  drawBricks();
-}
-
-function update() {
-  if (!paused) {
-    movePaddle();
-    moveBall();
-    //Draw everything
-    draw();
-  }
-}
-
-function loop() {
-  draw();
-  update();
-  if (!GAMEOVER) {
-    requestAnimationFrame(loop);
-  }
-}
-
-loop();
 
 // Move paddle through mouse
 function mouseMoveHandler(e) {
@@ -270,46 +251,39 @@ function mouseMoveHandler(e) {
   }
 }
 
-document.addEventListener("mousemove", mouseMoveHandler);
-
-// Rules and close event handlers
-rulesBtn.addEventListener("click", () => rules.classList.add("show"));
-closeBtn.addEventListener("click", () => rules.classList.remove("show"));
-
 // level up
 function levelUp() {
-    if (LEVEL === MAXLEVEL) {
+    if (currLevel === MAXLEVEL) {
       showYouWin();
       return;
     }
     win.play();
     showAllBricks();
     resetBall();
-    LEVEL++;
+    currLevel++;
 }
 
-// adding sounds
-const hitWall = new Audio("sounds/hit-wall.mp3");
-const hitPaddle = new Audio("sounds/hit-paddle.mp3");
-const hitBrick = new Audio("sounds/hit-brick.mp3");
-const win = new Audio("sounds/win.mp3");
-const gameIsOver = new Audio("sounds/game-over.mp3");
-const loseLife = new Audio("sounds/lose-life.mp3");
-
-
-function showYouWin() {
-  $("#modal-win").modal("show");
-  win.play();
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBall();
+  drawPaddle();
+  drawScore();
+  drawLife();
+  drawLevel();
+  drawBricks();
 }
 
-function showYouLose() {
-  $("#modal-lose").modal("show");
-  gameIsOver.play();
-}
-
-function gameOver() {
-  if (LIFE <= 0) {
-    showYouLose();
-    GAMEOVER = true;
+function loop() {
+  if(!isPaused){
+    if (!isGameOver) {
+      requestAnimationFrame(loop);
+    }
+    else{
+      movePaddle();
+      moveBall();
+      draw();
+    }
   }
 }
+
+loop();
