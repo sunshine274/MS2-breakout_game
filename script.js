@@ -151,6 +151,25 @@ function noVisibleBrickLeft() {
   return bricks.every(c => c.every(r => !r.visible));  
 }
 
+function intersects(circle, rect)
+{
+    const circleDistance = {
+      x: Math.abs(circle.x - rect.x),
+      y: Math.abs(circle.y - rect.y)
+    }
+
+    if (circleDistance.x > (rect.w/2 + circle.size)) { return false; }
+    if (circleDistance.y > (rect.h/2 + circle.size)) { return false; }
+
+    if (circleDistance.x <= (rect.w/2)) { return true; } 
+    if (circleDistance.y <= (rect.h/2)) { return true; }
+
+    cornerDistance_sq = (circleDistance.x - rect.w/2)^2 +
+                         (circleDistance.y - rect.h/2)^2;
+
+    return (cornerDistance_sq <= (circle.r^2));
+}
+
 function moveBall() {
   ball.x += ball.dx;
   ball.y += ball.dy;
@@ -167,27 +186,15 @@ function moveBall() {
   }
 
   // Paddle collision
-  if (
-    ball.x - ball.size > paddle.x &&
-    ball.x + ball.size < paddle.x + paddle.w &&
-    ball.y + ball.size > paddle.y
-  ) {
+  if (intersects(ball, paddle)) {
     hitPaddle.play();
     ball.dy = -ball.speed;
   }
 
-  const ballHitsBrick = (ball, brick) => {
-    return (ball.x - ball.size > brick.x &&
-      ball.x + ball.size < brick.x + brick.w &&
-      ball.y + ball.size > brick.y &&
-      ball.y - ball.size < brick.y + brick.h);
-  }
-
   // Brick collision
-  bricks.forEach((column) => {
-    column.forEach((brick) => {
-      if (brick.visible) {
-        if (ballHitsBrick(ball, brick)) {
+  bricks.forEach(column => {
+    column.forEach(brick => {
+        if (brick.visible && intersects(ball, brick)) {
           ball.dy *= -1;
           brick.visible = false;
           if(noVisibleBrickLeft()){
@@ -196,7 +203,6 @@ function moveBall() {
           hitBrick.play();
           increaseScore();
         }
-      }
     });
   });
 
