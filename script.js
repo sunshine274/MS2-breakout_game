@@ -75,7 +75,6 @@ function drawBricks() {
 }
 
 function initialiseBricks(){
-  console.log();
   for (let c = 0; c < BRICKCOLUMNCOUNT; c++) {
     bricks[c] = [];
     for (let r = 0; r < BRICKROWCOUNT; r++) {
@@ -88,7 +87,6 @@ function initialiseBricks(){
       };
     }
   }
-  console.log(bricks);
 }
 
 function drawBall() {
