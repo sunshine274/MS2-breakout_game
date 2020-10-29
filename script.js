@@ -1,4 +1,4 @@
-
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const paddleWidth = 80;
 const paddleHeight = 20;
@@ -19,11 +19,11 @@ let currLife = 3;
 let isPaused = false;
 let isGameOver = false;
 
-document.addEventListener("mousemove", mouseMoveHandler);
 const rulesBtn = document.getElementById("rules-btn");
 const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
-const canvas = document.getElementById("canvas");
+
+document.addEventListener("mousemove", mouseMoveHandler);
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
 closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 
@@ -54,9 +54,11 @@ const brickInfo = {
   visible: true,
 };
 
-for (let c = 0; c < brickColumnCount; c++) {
+const bricks = [];
+
+for (let c = 0; c < BRICKCOLUMNCOUNT; c++) {
   bricks[c] = [];
-  for (let r = 0; r < brickRowCount; r++) {
+  for (let r = 0; r < BRICKROWCOUNT; r++) {
     let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
     let y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
     bricks[c][r] = {
@@ -105,12 +107,12 @@ function drawPaddle() {
 
 function drawScore() {
   ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Score: ${score}`, canvas.width - 200, 30);
+  ctx.fillText(`Score: ${currScore}`, canvas.width - 200, 30);
 }
 
 function drawLife() {
   ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
+  ctx.fillText(`Life: ${currLife}`, canvas.width - 750, 30);
 }
 
 function drawLevel(){
@@ -139,10 +141,8 @@ function showYouLose() {
 }
 
 function gameOver() {
-  if (LIFE <= 0) {
     showYouLose();
-    GAMEOVER = true;
-  }
+    isGameOver = true;
 }
 
 const noVisibleBrickLeft = bricks.every(c => c.every(r => !r.visible));  
@@ -172,16 +172,18 @@ function moveBall() {
     ball.dy = -ball.speed;
   }
 
+  const ballHitsBrick = (ball, brick) => {
+    return (ball.x - ball.size > brick.x &&
+      ball.x + ball.size < brick.x + brick.w &&
+      ball.y + ball.size > brick.y &&
+      ball.y - ball.size < brick.y + brick.h)  
+  }
+
   // Brick collision
   bricks.forEach((column) => {
     column.forEach((brick) => {
       if (brick.visible) {
-        if (
-          ball.x - ball.size > brick.x &&
-          ball.x + ball.size < brick.x + brick.w &&
-          ball.y + ball.size > brick.y &&
-          ball.y - ball.size < brick.y + brick.h
-        ) {
+        if (ballHitsBrick(ball, brick)) {
           ball.dy *= -1;
           brick.visible = false;
           if(noVisibleBrickLeft){
@@ -195,13 +197,12 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size >= canvas.height) {
-    if (LIFE >= 1) {
+    currLife--;
+    if (currLife > 0) {
       loseLife.play();
       showAllBricks();
       score = 0;
-      LIFE--;
       resetBall();
-      GAMEOVER = false;
     } else {
       gameOver();
       return;
@@ -211,9 +212,8 @@ function moveBall() {
 
 // Increase score
 function increaseScore() {
-  score += 10;
-
-  if (score % (brickColumnCount * brickColumnCount) === 0) {
+  currScore += 10;
+  if (currScore % (BRICKCOLUMNCOUNT * BRICKCOLUMNCOUNT) === 0) {
     showAllBricks();
   }
 }
@@ -274,15 +274,13 @@ function draw() {
 }
 
 function loop() {
-  if(!isPaused){
-    if (!isGameOver) {
-      requestAnimationFrame(loop);
-    }
-    else{
-      movePaddle();
-      moveBall();
-      draw();
-    }
+  if (!isPaused) {
+    movePaddle();
+    moveBall();
+    draw();
+  }
+  if (!isGameOver) {
+    requestAnimationFrame(loop);
   }
 }
 

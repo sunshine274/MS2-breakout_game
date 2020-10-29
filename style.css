@@ -25,10 +25,6 @@ h1 {
   color: #fff;
 }
 
-button#pause-btn {
-  margin: 20px;
-}
-
 canvas {
   background: #f0f0f0;
   display: block;
@@ -42,6 +38,7 @@ canvas {
   background: gray;
   color: #fff;
   border-radius: 5px;
+  margin: 5px;
 }
 
 .btn:focus {
