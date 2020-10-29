@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const paddleWidth = 80;
-const paddleHeight = 20;
+const PADDLEWIDTH = 80;
+const PADDLEHEIGHT = 20;
 const MAXLEVEL = 3;
 const BRICKROWCOUNT = 2;
 const BRICKCOLUMNCOUNT = 9;
@@ -37,15 +37,15 @@ const ball = {
 };
 
 const paddle = {
-  x: canvas.width / 2 - paddleWidth / 2,
+  x: canvas.width / 2 - PADDLEWIDTH / 2,
   y: canvas.height - 40,
-  w: paddleWidth,
-  h: paddleHeight,
+  w: PADDLEWIDTH,
+  h: PADDLEHEIGHT,
   speed: 8,
   dx: 0,
 };
 
-const brickInfo = {
+const BRICKINFO = {
   w: 70,
   h: 20,
   padding: 10,
@@ -54,19 +54,12 @@ const brickInfo = {
   visible: true,
 };
 
-const bricks = [];
-
-for (let c = 0; c < BRICKCOLUMNCOUNT; c++) {
-  bricks[c] = [];
-  for (let r = 0; r < BRICKROWCOUNT; r++) {
-    let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-    let y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-    bricks[c][r] = {
-      x,
-      y,
-      ...brickInfo,
-    };
-  }
+function resetGame(){
+  currLevel = 1;
+  currScore = 0;
+  currLife = 3;
+  showAllBricks();
+  resetBall();
 }
 
 function drawBricks() {
@@ -82,11 +75,20 @@ function drawBricks() {
 }
 
 function initialiseBricks(){
-
-}
-
-function resetBricks(){
-
+  console.log();
+  for (let c = 0; c < BRICKCOLUMNCOUNT; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < BRICKROWCOUNT; r++) {
+      let x = c * (BRICKINFO.w + BRICKINFO.padding) + BRICKINFO.offsetX;
+      let y = r * (BRICKINFO.h + BRICKINFO.padding) + BRICKINFO.offsetY;
+      bricks[c][r] = {
+        x,
+        y,
+        ...BRICKINFO,
+      };
+    }
+  }
+  console.log(bricks);
 }
 
 function drawBall() {
@@ -145,7 +147,9 @@ function gameOver() {
     isGameOver = true;
 }
 
-const noVisibleBrickLeft = bricks.every(c => c.every(r => !r.visible));  
+function noVisibleBrickLeft() {
+  return bricks.every(c => c.every(r => !r.visible));  
+}
 
 function moveBall() {
   ball.x += ball.dx;
@@ -176,7 +180,7 @@ function moveBall() {
     return (ball.x - ball.size > brick.x &&
       ball.x + ball.size < brick.x + brick.w &&
       ball.y + ball.size > brick.y &&
-      ball.y - ball.size < brick.y + brick.h)  
+      ball.y - ball.size < brick.y + brick.h);
   }
 
   // Brick collision
@@ -186,7 +190,7 @@ function moveBall() {
         if (ballHitsBrick(ball, brick)) {
           ball.dy *= -1;
           brick.visible = false;
-          if(noVisibleBrickLeft){
+          if(noVisibleBrickLeft()){
             levelUp();
           }
           hitBrick.play();
@@ -195,6 +199,7 @@ function moveBall() {
       }
     });
   });
+
   // Hit bottom wall - lose a life
   if (ball.y + ball.size >= canvas.height) {
     currLife--;
@@ -284,4 +289,6 @@ function loop() {
   }
 }
 
+const bricks = [];
+initialiseBricks();
 loop();
