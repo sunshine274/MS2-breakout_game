@@ -1,14 +1,15 @@
 const canvas = document.getElementById("canvas");
 
-canvas.width = window.innerWidth;
-canvas.height=window.innerHeight;
+const canvasWidth = window.innerWidth * 0.8;
+canvas.width = canvasWidth;
+canvas.height= window.innerHeight * 0.8;
 
 const ctx = canvas.getContext("2d");
 const PADDLEWIDTH = 80;
 const PADDLEHEIGHT = 20;
 const MAXLEVEL = 3;
 const BRICKROWCOUNT = 2;
-const BRICKCOLUMNCOUNT = 8;
+const BRICKCOLUMNCOUNT = canvasWidth * 0.8 / 80;
 
 const hitWall = new Audio("sounds/hit-wall.mp3");
 const hitPaddle = new Audio("sounds/hit-paddle.mp3");
@@ -28,8 +29,16 @@ const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
 
 document.addEventListener("mousemove", mouseMoveHandler);
+//document.addEventListener("touchmove", mouseMoveHandler);
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
 closeBtn.addEventListener("click", () => rules.classList.remove("show"));
+
+
+document.ontouchmove=touchBar;
+function touchBar(e){
+  var x = e.touches[0].clientX;
+  paddle.x = x - canvas.offsetLeft - paddle.w / 2;
+}
 
 const ball = {
   x: canvas.width / 2,
@@ -80,11 +89,11 @@ function drawBricks() {
 
 function initialiseBricks(){
   bricks = [];
-  const startingPosition = window.innerWidth / 2 - BRICKCOLUMNCOUNT/2 * (BRICKINFO.w + BRICKINFO.padding) + BRICKINFO.offsetX
+  const startingPosition = canvasWidth / 2 - BRICKCOLUMNCOUNT/2 * (BRICKINFO.w + BRICKINFO.padding)
   for (let c = 0; c < BRICKCOLUMNCOUNT; c++) {
     bricks[c] = [];
     for (let r = 0; r < currLevel * 2; r++) {
-      let x = startingPosition + c * (BRICKINFO.w + BRICKINFO.padding) + BRICKINFO.offsetX;
+      let x = startingPosition + c * (BRICKINFO.w + BRICKINFO.padding);
       let y = r * (BRICKINFO.h + BRICKINFO.padding) + BRICKINFO.offsetY;
       bricks[c][r] = {
         x,
