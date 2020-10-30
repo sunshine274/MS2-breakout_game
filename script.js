@@ -1,10 +1,14 @@
 const canvas = document.getElementById("canvas");
+
+canvas.width = window.innerWidth;
+canvas.height=window.innerHeight;
+
 const ctx = canvas.getContext("2d");
 const PADDLEWIDTH = 80;
 const PADDLEHEIGHT = 20;
 const MAXLEVEL = 3;
 const BRICKROWCOUNT = 2;
-const BRICKCOLUMNCOUNT = 9;
+const BRICKCOLUMNCOUNT = 8;
 
 const hitWall = new Audio("sounds/hit-wall.mp3");
 const hitPaddle = new Audio("sounds/hit-paddle.mp3");
@@ -75,10 +79,12 @@ function drawBricks() {
 }
 
 function initialiseBricks(){
+  bricks = [];
+  const startingPosition = window.innerWidth / 2 - BRICKCOLUMNCOUNT/2 * (BRICKINFO.w + BRICKINFO.padding) + BRICKINFO.offsetX
   for (let c = 0; c < BRICKCOLUMNCOUNT; c++) {
     bricks[c] = [];
-    for (let r = 0; r < BRICKROWCOUNT; r++) {
-      let x = c * (BRICKINFO.w + BRICKINFO.padding) + BRICKINFO.offsetX;
+    for (let r = 0; r < currLevel * 2; r++) {
+      let x = startingPosition + c * (BRICKINFO.w + BRICKINFO.padding) + BRICKINFO.offsetX;
       let y = r * (BRICKINFO.h + BRICKINFO.padding) + BRICKINFO.offsetY;
       bricks[c][r] = {
         x,
@@ -267,9 +273,10 @@ function levelUp() {
       return;
     }
     win.play();
+    currLevel++;
+    initialiseBricks();
     showAllBricks();
     resetBall();
-    currLevel++;
 }
 
 function draw() {
@@ -293,6 +300,6 @@ function loop() {
   }
 }
 
-const bricks = [];
+let bricks = [];
 initialiseBricks();
 loop();
