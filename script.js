@@ -4,20 +4,23 @@ const rulesBtn = document.getElementById("rules-btn");
 const closeBtn = document.getElementById("close-btn");
 const rules = document.getElementById("rules");
 const canvas = document.getElementById("canvas");
+const CANVASWIDTH = window.innerWidth * 0.8;
+canvas.width = CANVASWIDTH;
+canvas.height = window.innerHeight * 0.8;
 const ctx = canvas.getContext("2d");
 const paddleWidth = 80;
 const paddleHeight = 20;
+const MAXLEVEL = 3;
 
-let LEVEL = 1;
-let MAXLEVEL = 3;
-let score = 0;
-let LIFE = 3;
+let currLevel = 1;
+let currScore = 0;
+let currLife = 3;
 let paused = false;
 let GAMEOVER = false;
 let bricks = [];
 
 let brickRowCount = 2;
-let brickColumnCount = 9;
+let brickColumnCount = CANVASWIDTH * 0.8 / 80;
 
 // Create ball properties
 const ball = {
@@ -90,18 +93,18 @@ function drawPaddle() {
 // Draw score on canvas
 function drawScore() {
   ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Score: ${score}`, canvas.width - 200, 30);
+  ctx.fillText(`Score: ${currScore}`, canvas.width - 200, 30);
 }
 
 // Draw Life on canvas
 function drawLife() {
   ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Life: ${LIFE}`, canvas.width - 750, 30);
+  ctx.fillText(`Life: ${currLife}`, canvas.width - 750, 30);
 }
 
 function drawLevel(){
     ctx.font ="20px 'Bungee Shade'";
-    ctx.fillText(`Level: ${LEVEL}`, canvas.width/2 - 80, 30);
+    ctx.fillText(`Level: ${currLevel}`, canvas.width/2 - 80, 30);
 }
 // Draw bricks on canvas
 function drawBricks() {
@@ -183,11 +186,11 @@ function moveBall() {
   });
   // Hit bottom wall - lose a life
   if (ball.y + ball.size >= canvas.height) {
-       LIFE--;
-    if (LIFE >= 1) {
+       currLife--;
+    if (currLife >= 1) {
       loseLife.play();
       showAllBricks();
-      score = 0;
+      currScore = 0;
       resetBall();
       GAMEOVER = false;
     } else {
@@ -199,9 +202,9 @@ function moveBall() {
 
 // Increase score
 function increaseScore() {
-  score += 10;
+  currScore += 10;
 
-  if (score % (brickColumnCount * brickColumnCount) === 0) {
+  if (currScore % (brickColumnCount * brickColumnCount) === 0) {
     showAllBricks();
   }
 }
@@ -222,7 +225,6 @@ function resetBall() {
 }
 
 $('#pause-btn').click(function(){
-
   if (!paused) {
     paused = true;
     document.getElementById("pause-btn").innerHTML = "Start";
@@ -231,6 +233,14 @@ $('#pause-btn').click(function(){
     document.getElementById("pause-btn").innerHTML = "Pause";
   }
 
+});
+
+$('#restart-btn').click(function(){
+    currLevel = 1;
+    currScore = 0;
+    currLife = 3;
+    showAllBricks();
+    resetBall();
 });
 
 
@@ -291,7 +301,7 @@ closeBtn.addEventListener("click", () => rules.classList.remove("show"));
 // level up
 function levelUp() {
     
-  if( LEVEL === MAXLEVEL){
+  if( currLevel === MAXLEVEL){
       showYouWin();
       return;
   }
@@ -300,7 +310,7 @@ showAllBricks();
 brickRowCount += 2;
     ball.speed += 1;
     resetBall();
-    LEVEL++;
+    currLevel++;
     
     
   }
@@ -326,7 +336,7 @@ function showYouLose() {
 }
 
 function gameOver() {
-  if (LIFE <= 0) {
+  if (currLife <= 0) {
     showYouLose();
     GAMEOVER = true;
   }
