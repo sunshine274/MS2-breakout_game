@@ -54,10 +54,12 @@ const brickInfo = {
 
 // Create bricks : positions and status
 function createBricks(){
+    bricks = [];
+    const startPosition = CANVASWIDTH / 2 - brickColumnCount/2 *(brickInfo.w + brickInfo.padding)
 for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
-    for (let r = 0; r < brickRowCount; r++) {
-      let x = c * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+    for (let r = 0; r < currLevel * 2; r++) {
+      let x = c * (brickInfo.w + brickInfo.padding) + startPosition;
       let y = r * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
       bricks[c][r] = {
         x,
@@ -307,7 +309,7 @@ function levelUp() {
   }
 win.play();
 showAllBricks();
-brickRowCount += 2;
+createBricks();
     ball.speed += 1;
     resetBall();
     currLevel++;
