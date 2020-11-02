@@ -92,19 +92,19 @@ function drawPaddle() {
 
 // Draw score on canvas
 function drawScore() {
-  ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Score: ${currScore}`, canvas.width - 200, 30);
+  ctx.font = "18px 'Bungee Shade'";
+  ctx.fillText(`Score: ${currScore}`, canvas.width * 0.65, 30);
 }
 
 // Draw Life on canvas
 function drawLife() {
-  ctx.font = "20px 'Bungee Shade'";
-  ctx.fillText(`Life: ${currLife}`, canvas.width - 750, 30);
+  ctx.font = "18px 'Bungee Shade'";
+  ctx.fillText(`Life: ${currLife}`, canvas.width * 0.4, 30);
 }
 
 function drawLevel(){
-    ctx.font ="20px 'Bungee Shade'";
-    ctx.fillText(`Level: ${currLevel}`, canvas.width/2 - 80, 30);
+    ctx.font ="18px 'Bungee Shade'";
+    ctx.fillText(`Level: ${currLevel}`, canvas.width * 0.1, 30);
 }
 // Draw bricks on canvas
 function drawBricks() {
