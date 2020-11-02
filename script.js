@@ -18,8 +18,6 @@ let currLife = 3;
 let paused = false;
 let GAMEOVER = false;
 let bricks = [];
-
-let brickRowCount = 2;
 let brickColumnCount = CANVASWIDTH * 0.8 / 80;
 
 // Create ball properties
@@ -286,7 +284,7 @@ startGame();
 
 
 
-// Move paddle through mouse
+// Move paddle through mouse 
 function mouseMoveHandler(e) {
   let relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
@@ -295,6 +293,13 @@ function mouseMoveHandler(e) {
 }
 
 document.addEventListener("mousemove", mouseMoveHandler);
+
+// Move paddle by touching screen
+document.ontouchmove = touchBar;
+function touchBar(e){
+    let x = e.touches[0].clientX;
+    paddle.x = x - canvas.offsetLeft - paddle.w/2;
+}
 
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
