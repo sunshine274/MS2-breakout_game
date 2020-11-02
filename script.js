@@ -24,7 +24,7 @@ let brickColumnCount = CANVASWIDTH * 0.8 / 80;
 const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
-  size: 10,
+  radius: 10,
   speed: 5,
   dx: 4,
   dy: -4,
@@ -53,7 +53,7 @@ const brickInfo = {
 // Create bricks : positions and status
 function createBricks(){
     bricks = [];
-    const startPosition = CANVASWIDTH / 2 - brickColumnCount/2 *(brickInfo.w + brickInfo.padding)
+    const startPosition = CANVASWIDTH / 2 - brickColumnCount/2 * (brickInfo.w + brickInfo.padding)
 for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (let r = 0; r < currLevel * 2; r++) {
@@ -75,7 +75,7 @@ createBricks();
 // Draw ball on canvas
 function drawBall() {
   ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
   ctx.fillStyle = "gold";
   ctx.fill();
   ctx.closePath();
@@ -134,7 +134,9 @@ function movePaddle() {
   }
 }
 
-const noVisibleBrick = bricks.every(c=> c.every(r => !r.visible));
+function noVisibleBrick () {
+return bricks.every(c=> c.every(r => !r.visible));
+}
 
 // Move ball
 function moveBall() {
@@ -142,22 +144,22 @@ function moveBall() {
   ball.y += ball.dy;
 
   // Wall detection (x)
-  if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+  if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
     hitWall.play();
     ball.dx *= -1;
   }
 
   // Wall detection (top/bottom)
-  if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+  if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
     hitWall.play();
     ball.dy *= -1;
   }
 
   // Paddle collision
   if (
-    ball.x - ball.size > paddle.x &&
-    ball.x + ball.size < paddle.x + paddle.w &&
-    ball.y + ball.size > paddle.y
+    ball.x - ball.radius > paddle.x &&
+    ball.x + ball.radius < paddle.x + paddle.w &&
+    ball.y + ball.radius > paddle.y
   ) {
     hitPaddle.play();
     ball.dy = -ball.speed;
@@ -168,14 +170,14 @@ function moveBall() {
     column.forEach((brick) => {
       if (brick.visible) {
         if (
-          ball.x - ball.size > brick.x &&
-          ball.x + ball.size < brick.x + brick.w &&
-          ball.y + ball.size > brick.y &&
-          ball.y - ball.size < brick.y + brick.h
+          ball.x - ball.radius > brick.x &&
+          ball.x + ball.radius < brick.x + brick.w &&
+          ball.y + ball.radius > brick.y &&
+          ball.y - ball.radius < brick.y + brick.h
         ) {
           ball.dy *= -1;
           brick.visible = false;
-          if(noVisibleBrick){
+          if(noVisibleBrick()){
               levelUp();
           }
           hitBrick.play();
@@ -185,7 +187,7 @@ function moveBall() {
     });
   });
   // Hit bottom wall - lose a life
-  if (ball.y + ball.size >= canvas.height) {
+  if (ball.y + ball.radius > canvas.height) {
        currLife--;
     if (currLife >= 1) {
       loseLife.play();
@@ -280,10 +282,6 @@ function startGame() {
 
 startGame();
 
-
-
-
-
 // Move paddle through mouse 
 function mouseMoveHandler(e) {
   let relativeX = e.clientX - canvas.offsetLeft;
@@ -313,13 +311,11 @@ function levelUp() {
       return;
   }
 win.play();
+currLevel++;
 showAllBricks();
 createBricks();
     ball.speed += 1;
     resetBall();
-    currLevel++;
-    
-    
   }
 
 
