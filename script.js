@@ -53,7 +53,7 @@ const brickInfo = {
 // Create bricks : positions and status
 function createBricks(){
     bricks = [];
-    const startPosition = CANVASWIDTH / 2 - brickColumnCount/2 * (brickInfo.w + brickInfo.padding)
+    const startPosition = CANVASWIDTH / 2 - brickColumnCount/2 * (brickInfo.w + brickInfo.padding) - brickInfo.padding;
 for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (let r = 0; r < currLevel * 2; r++) {
@@ -204,7 +204,7 @@ function moveBall() {
 
 // Increase score
 function increaseScore() {
-  currScore += 10;
+  currScore += 15;
 
   if (currScore % (brickColumnCount * brickColumnCount) === 0) {
     showAllBricks();
@@ -331,6 +331,7 @@ const loseLife = new Audio("sounds/lose-life.mp3");
 function showYouWin() {
   $("#modal-win").modal("show");
   win.play();
+  GAMEOVER = true;
 }
 
 function showYouLose() {
