@@ -32,7 +32,7 @@ $(document).ready(function () {
     x: canvas.width / 2,
     y: canvas.height / 2,
     radius: 10,
-    speed: 5,
+    speed: 6,
     dx: 4,
     dy: -4,
   };
