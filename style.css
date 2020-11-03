@@ -21,7 +21,7 @@ body {
 }
 
 h1 {
-  font-size: 45px;
+    padding: 5px;
   color: #fff;
 }
 
@@ -35,8 +35,8 @@ canvas {
   cursor: pointer;
   border: 0;
   padding: 10px 20px;
-  background: gray;
-  color: #fff;
+  background: #fff;
+  color: black;
   border-radius: 5px;
   margin: 5px;
 }
@@ -51,12 +51,6 @@ canvas {
 
 .btn:active {
   transform: scale(0.98);
-}
-
-.rules-btn {
-  position: absolute;
-  top: 30px;
-  left: 30px;
 }
 
 .rules {

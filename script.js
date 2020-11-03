@@ -18,6 +18,7 @@ $(document).ready(function () {
   gradient.addColorStop("0.75", "green");
   gradient.addColorStop("1.0", "orange");
 
+  let rulesShown = false;
   let currLevel = 1;
   let currScore = 0;
   let currLife = 3;
@@ -301,8 +302,23 @@ $(document).ready(function () {
   }
 
   // Rules and close event handlers
-  rulesBtn.addEventListener("click", () => rules.classList.add("show"));
-  closeBtn.addEventListener("click", () => rules.classList.remove("show"));
+  $("#rules-btn").click(function () {
+    if (!rulesShown) {
+      rules.classList.add("show");
+      rulesShown = true;
+      document.getElementById("rules-btn").innerHTML = "Hide Rules";
+    } else {
+      hideRules();
+    }
+  });
+
+  function hideRules(){
+      rules.classList.remove("show");
+      rulesShown = false;
+      document.getElementById("rules-btn").innerHTML = "Show Rules";
+  }
+
+  closeBtn.addEventListener("click", hideRules);
 
   // level up
   function levelUp() {
