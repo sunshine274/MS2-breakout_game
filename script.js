@@ -13,9 +13,9 @@ $(document).ready(function () {
   const MAXLEVEL = 3;
   const gradient = ctx.createLinearGradient(0, 0, CANVASWIDTH, 0);
   gradient.addColorStop("0", "red");
-  gradient.addColorStop("0.25", "orange");
-  gradient.addColorStop("0.5", "blue");
-  gradient.addColorStop("1.0", "#33ff36");
+  gradient.addColorStop("0.25", "blue");
+  gradient.addColorStop("0.5", "yellow");
+  gradient.addColorStop("1.0", "chartreuse");
  
 
   let rulesShown = false;
@@ -228,7 +228,7 @@ $(document).ready(function () {
   // Reset the ball
   function resetBall() {
     ball.x = canvas.width / 2;
-    ball.y = paddle.y;
+    ball.y = paddle.y - ball.radius - 3;
     ball.x += ball.dx;
     ball.y += ball.dy;
   }
