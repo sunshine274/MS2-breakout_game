@@ -13,10 +13,10 @@ $(document).ready(function () {
   const MAXLEVEL = 3;
   const gradient = ctx.createLinearGradient(0, 0, CANVASWIDTH, 0);
   gradient.addColorStop("0", "red");
-  gradient.addColorStop("0.25", "yellow");
+  gradient.addColorStop("0.25", "orange");
   gradient.addColorStop("0.5", "blue");
-  gradient.addColorStop("0.75", "green");
-  gradient.addColorStop("1.0", "orange");
+  gradient.addColorStop("1.0", "#33ff36");
+ 
 
   let rulesShown = false;
   let currLevel = 1;
@@ -117,13 +117,14 @@ $(document).ready(function () {
     ctx.fillText(`Level : ${currLevel}`, canvas.width * 0.1, 30);
     ctx.fillStyle = gradient;
   }
+
   // Draw bricks on canvas
   function drawBricks() {
     bricks.forEach((column) => {
       column.forEach((brick) => {
         ctx.beginPath();
         ctx.rect(brick.x, brick.y, brick.w, brick.h);
-        ctx.fillStyle = brick.visible ? "grey" : "transparent";
+        ctx.fillStyle = brick.visible ? gradient : "transparent";
         ctx.fill();
         ctx.closePath();
       });
@@ -172,7 +173,7 @@ $(document).ready(function () {
       ball.y + ball.radius > paddle.y
     ) {
       hitPaddle.play();
-      ball.dy = -ball.speed;
+      ball.dy = - ball.speed;
     }
 
     // Brick collision
