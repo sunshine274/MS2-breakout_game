@@ -336,12 +336,12 @@ $(document).ready(function () {
   }
 
   // adding sounds
-  const hitWall = new Audio("sounds/hit-wall.mp3");
-  const hitPaddle = new Audio("sounds/hit-paddle.mp3");
-  const hitBrick = new Audio("sounds/hit-brick.mp3");
-  const win = new Audio("sounds/win.mp3");
-  const gameIsOver = new Audio("sounds/game-over.mp3");
-  const loseLife = new Audio("sounds/lose-life.mp3");
+  const hitWall = new Audio("assets/sounds/hit-wall.mp3");
+  const hitPaddle = new Audio("assets/sounds/hit-paddle.mp3");
+  const hitBrick = new Audio("assets/sounds/hit-brick.mp3");
+  const win = new Audio("assets/sounds/win.mp3");
+  const gameIsOver = new Audio("assets/sounds/game-over.mp3");
+  const loseLife = new Audio("assets/sounds/lose-life.mp3");
 
   function showYouWin() {
     $("#modal-win").modal("show");
