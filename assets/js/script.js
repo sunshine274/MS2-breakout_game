@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  const rulesBtn = document.getElementById("rules-btn");
   const closeBtn = document.getElementById("close-btn");
   const rules = document.getElementById("rules");
   const canvas = document.getElementById("canvas");
@@ -12,10 +11,11 @@ $(document).ready(function () {
   const paddleBottomMargin = 20;
   const MAXLEVEL = 3;
   const gradient = ctx.createLinearGradient(0, 0, CANVASWIDTH, 0);
-  gradient.addColorStop("0", "red");
-  gradient.addColorStop("0.25", "blue");
-  gradient.addColorStop("0.5", "yellow");
-  gradient.addColorStop("1.0", "chartreuse");
+    gradient.addColorStop("0", "red");
+    gradient.addColorStop("0.25", "blue");
+    gradient.addColorStop("0.5", "yellow");
+    gradient.addColorStop("1.0", "#00cc00");
+
  // adding sounds
   const hitWall = new Audio("assets/sounds/hit-wall.mp3");
   const hitPaddle = new Audio("assets/sounds/hit-paddle.mp3");
@@ -30,9 +30,18 @@ $(document).ready(function () {
   let currScore = 0;
   let currLife = 3;
   let paused = false;
+  let gameStarted = false;
   let GAMEOVER = false;
   let bricks = [];
   let brickColumnCount = (CANVASWIDTH * 0.8) / 80;
+
+  function drawWelcome(){
+    ctx.font = "5rem 'Anton'";
+    ctx.fillText(`Ready?`, canvas.width * 0.3, canvas.height * 0.3 );
+    ctx.fillStyle = "grey";
+  }
+
+drawWelcome();
 
   // Create ball properties
   const ball = {
@@ -108,20 +117,20 @@ $(document).ready(function () {
   // Draw score on canvas
   function drawScore() {
     ctx.font = "18px 'Anton'";
-    ctx.fillText(`Score : ${currScore}`, canvas.width * 0.65, 30);
+    ctx.fillText(`SCORE : ${currScore}`, canvas.width * 0.65, 30);
     ctx.fillStyle = gradient;
   }
 
   // Draw Life on canvas
   function drawLife() {
     ctx.font = "18px 'Anton'";
-    ctx.fillText(`Life : ${currLife}`, canvas.width * 0.4, 30);
+    ctx.fillText(`LIFE : ${currLife}`, canvas.width * 0.4, 30);
     ctx.fillStyle = gradient;
   }
 
   function drawLevel() {
     ctx.font = "18px 'Anton'";
-    ctx.fillText(`Level : ${currLevel}`, canvas.width * 0.1, 30);
+    ctx.fillText(`LEVEL : ${currLevel}`, canvas.width * 0.1, 30);
     ctx.fillStyle = gradient;
   }
 
@@ -243,19 +252,28 @@ $(document).ready(function () {
   $("#pause-btn").click(function () {
     if (!paused) {
       paused = true;
-      document.getElementById("pause-btn").innerHTML = "Start";
+      document.getElementById("pause-btn").innerHTML = "Continue";
     } else {
       paused = false;
       document.getElementById("pause-btn").innerHTML = "Pause";
     }
   });
 
-  $("#restart-btn").click(function () {
-    currLevel = 1;
-    currScore = 0;
-    currLife = 3;
-    showAllBricks();
-    resetBall();
+  $("#start-btn").click(function () {
+        startGame();
+        gameStarted = true; 
+        document.getElementById("start-btn").innerHTML = "Restart";
+        currLevel = 1;
+        currScore = 0;
+        currLife = 3;
+        showAllBricks();
+      if(!paused){
+          movePaddle();
+          moveBall();
+        //Draw everything
+        draw();
+      }
+      
   });
 
   // Draw everything
@@ -265,9 +283,6 @@ $(document).ready(function () {
 
     drawBall();
     drawPaddle();
-
-    
-
     drawBricks();
   }
 
@@ -283,15 +298,16 @@ $(document).ready(function () {
   function startGame() {
     draw();
     update();
-    if (!GAMEOVER) {
-      requestAnimationFrame(startGame);
     drawScore();
     drawLife();
     drawLevel();
+    if (!GAMEOVER) {
+      requestAnimationFrame(startGame);
+    
     }
   }
 
-  startGame();
+  
 
   // Move paddle through mouse
   function mouseMoveHandler(e) {
