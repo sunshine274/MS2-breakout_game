@@ -16,7 +16,14 @@ $(document).ready(function () {
   gradient.addColorStop("0.25", "blue");
   gradient.addColorStop("0.5", "yellow");
   gradient.addColorStop("1.0", "chartreuse");
- 
+ // adding sounds
+  const hitWall = new Audio("assets/sounds/hit-wall.mp3");
+  const hitPaddle = new Audio("assets/sounds/hit-paddle.mp3");
+  const hitBrick = new Audio("assets/sounds/hit-brick.mp3");
+  const win = new Audio("assets/sounds/win.mp3");
+  const gameIsOver = new Audio("assets/sounds/game-over.mp3");
+  const loseLife = new Audio("assets/sounds/lose-life.mp3");
+
 
   let rulesShown = false;
   let currLevel = 1;
@@ -259,9 +266,7 @@ $(document).ready(function () {
     drawBall();
     drawPaddle();
 
-    drawScore();
-    drawLife();
-    drawLevel();
+    
 
     drawBricks();
   }
@@ -280,6 +285,9 @@ $(document).ready(function () {
     update();
     if (!GAMEOVER) {
       requestAnimationFrame(startGame);
+    drawScore();
+    drawLife();
+    drawLevel();
     }
   }
 
@@ -335,14 +343,7 @@ $(document).ready(function () {
     resetBall();
   }
 
-  // adding sounds
-  const hitWall = new Audio("assets/sounds/hit-wall.mp3");
-  const hitPaddle = new Audio("assets/sounds/hit-paddle.mp3");
-  const hitBrick = new Audio("assets/sounds/hit-brick.mp3");
-  const win = new Audio("assets/sounds/win.mp3");
-  const gameIsOver = new Audio("assets/sounds/game-over.mp3");
-  const loseLife = new Audio("assets/sounds/lose-life.mp3");
-
+  
   function showYouWin() {
     $("#modal-win").modal("show");
     win.play();

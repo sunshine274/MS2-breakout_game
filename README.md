@@ -17,6 +17,7 @@ View the live project here
         1. As a First Time Game Player, I want to easily understand how to play the breakout game.
         2. As a First Time Game Player, I want to easily manipulate the paddle to play.
         3. As a First Time Game Player, I want to be visually motivated while playing.
+        4. 
 
     -   #### Experienced Breakout Game Player Goals
 
