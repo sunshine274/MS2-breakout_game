@@ -38,7 +38,7 @@ $(document).ready(function () {
   // Create ball properties
   const ball = {
     x: canvas.width / 2,
-    y: canvas.height / 2,
+    y: canvas.height - paddleHeight - paddleBottomMargin - 10,
     radius: 10,
     speed: 6,
     dx: 4,
@@ -87,6 +87,7 @@ $(document).ready(function () {
   }
 
   createBricks();
+  draw();
 
   // Draw ball on canvas
   function drawBall() {
@@ -235,7 +236,6 @@ $(document).ready(function () {
 
   // Reset the ball
   function resetBall() {
-      console.log(ball.speed);
     ball.x = canvas.width / 2;
     ball.y = paddle.y - ball.radius - 3;
     ball.x += ball.dx;
@@ -290,6 +290,7 @@ $(document).ready(function () {
       moveBall();
       //Draw everything
       draw();
+      drawScore();
     }
   }
 
