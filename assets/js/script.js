@@ -35,14 +35,6 @@ $(document).ready(function () {
   let bricks = [];
   let brickColumnCount = (CANVASWIDTH * 0.8) / 80;
 
-  function drawWelcome(){
-    ctx.font = "5rem 'Anton'";
-    ctx.fillText(`Ready?`, canvas.width * 0.3, canvas.height * 0.3 );
-    ctx.fillStyle = "grey";
-  }
-
-drawWelcome();
-
   // Create ball properties
   const ball = {
     x: canvas.width / 2,
@@ -243,10 +235,12 @@ drawWelcome();
 
   // Reset the ball
   function resetBall() {
+      console.log(ball.speed);
     ball.x = canvas.width / 2;
     ball.y = paddle.y - ball.radius - 3;
     ball.x += ball.dx;
     ball.y += ball.dy;
+    ball.speed = 5;
   }
 
   $("#pause-btn").click(function () {
@@ -260,6 +254,7 @@ drawWelcome();
   });
 
   $("#start-btn").click(function () {
+      
         startGame();
         gameStarted = true; 
         document.getElementById("start-btn").innerHTML = "Restart";
@@ -267,13 +262,16 @@ drawWelcome();
         currScore = 0;
         currLife = 3;
         showAllBricks();
+        resetBall();
       if(!paused){
+          
           movePaddle();
           moveBall();
         //Draw everything
         draw();
+        
       }
-      
+     
   });
 
   // Draw everything
@@ -303,7 +301,6 @@ drawWelcome();
     drawLevel();
     if (!GAMEOVER) {
       requestAnimationFrame(startGame);
-    
     }
   }
 
