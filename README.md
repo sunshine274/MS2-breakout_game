@@ -1,10 +1,9 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
 
-# Your Project's Name
+# MS2 Basic Breakout Game
 
-View the live project here
+View the live project [here](https://sunshine274.github.io/js-MS2-break_out_game/)
 
-<h2 align="center"><img src="https://i.ibb.co/TYvTXz1/Example-CI.png"></h2>
+<h2 align="center"><img src="assets/images/mockup-img.png"></h2>
 
 #### This basic breakout game project aims to put my knowledge of HTML/CSS/JavaScript into practice and improve my skills in interactive functionalities.  This project is also a tribute to the original 1970s Breakout Game made by Steve Wozniak, which inspired certain aspects of Apple II computers.
 
@@ -17,7 +16,8 @@ View the live project here
         1. As a First Time Game Player, I want to easily understand how to play the breakout game.
         2. As a First Time Game Player, I want to easily manipulate the paddle to play.
         3. As a First Time Game Player, I want to be visually motivated while playing.
-        4. 
+        4. As a First Time Game Player, I want to be able to gain scores and level up.
+        5. As a First Time Game Player, I want to pause or reset the game whenever I want without losing what I have achieved.
 
     -   #### Experienced Breakout Game Player Goals
 
@@ -35,14 +35,13 @@ View the live project here
 
 *   ### Wireframes
 
-    -   Home Page Wireframe - 
-    -   Game page Wireframe - 
+    <h2 align="center"><img src="assets/wireframes/breakout_game.png"></h2>   
 
 ## Features
 
 -   Responsive on all device sizes
-
--   Interactive elements
+-   Sound effects
+-   Interactive buttons and paddle
 
 ## Technologies Used
 
@@ -65,7 +64,7 @@ View the live project here
 1. [GitHub:](https://github.com/)
     - GitHub is used to store the projects code after being pushed from Git.
 1. [Balsamiq:](https://balsamiq.com/)
-    - Balsamiq was used to create the [wireframes](https://github.com/) during the design process.
+    - Balsamiq was used to create the wireframes during the design process.
 
 ## Testing
 
@@ -83,9 +82,9 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 ### Known Bugs
 
 -   On mobile devices with small screens, the play experience might be very limited, while on devices with large screen such as iMac, the user experience is better when the browser window is minished.
--   The bricks might not be centered in some browser windows.
--   The ball sometimes pierces through bricks instead of break them.
--   The ball sometimes sinks into the paddle instead of touching the top edge.
+-   The bricks might not be 100% centered in some browser windows.
+-   The ball sometimes pierces through bricks instead of breaking them.
+-   The ball speed is escalated after first bounce to the paddle at level 1. (Given more time I should be able to fix this)
 
 ## Deployment
 
