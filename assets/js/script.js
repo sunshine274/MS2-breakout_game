@@ -11,19 +11,18 @@ $(document).ready(function () {
   const paddleBottomMargin = 20;
   const MAXLEVEL = 3;
   const gradient = ctx.createLinearGradient(0, 0, CANVASWIDTH, 0);
-    gradient.addColorStop("0", "red");
-    gradient.addColorStop("0.25", "blue");
-    gradient.addColorStop("0.5", "yellow");
-    gradient.addColorStop("1.0", "#00cc00");
+  gradient.addColorStop("0", "red");
+  gradient.addColorStop("0.25", "blue");
+  gradient.addColorStop("0.5", "yellow");
+  gradient.addColorStop("1.0", "#00cc00");
 
- // adding sounds
+  // adding sounds
   const hitWall = new Audio("assets/sounds/hit-wall.mp3");
   const hitPaddle = new Audio("assets/sounds/hit-paddle.mp3");
   const hitBrick = new Audio("assets/sounds/hit-brick.mp3");
   const win = new Audio("assets/sounds/win.mp3");
   const gameIsOver = new Audio("assets/sounds/game-over.mp3");
   const loseLife = new Audio("assets/sounds/lose-life.mp3");
-
 
   let rulesShown = false;
   let currLevel = 1;
@@ -40,7 +39,7 @@ $(document).ready(function () {
     x: canvas.width / 2,
     y: canvas.height - paddleHeight - paddleBottomMargin - 10,
     radius: 10,
-    speed: 6,
+    speed: 7,
     dx: 4,
     dy: -4,
   };
@@ -182,7 +181,7 @@ $(document).ready(function () {
       ball.y + ball.radius > paddle.y
     ) {
       hitPaddle.play();
-      ball.dy = - ball.speed;
+      ball.dy = -ball.speed;
     }
 
     // Brick collision
@@ -240,7 +239,7 @@ $(document).ready(function () {
     ball.y = paddle.y - ball.radius - 3;
     ball.x += ball.dx;
     ball.y += ball.dy;
-    ball.speed = 5;
+    ball.speed = 7;
   }
 
   $("#pause-btn").click(function () {
@@ -254,24 +253,23 @@ $(document).ready(function () {
   });
 
   $("#start-btn").click(function () {
-      
-        startGame();
-        gameStarted = true; 
-        document.getElementById("start-btn").innerHTML = "Restart";
-        currLevel = 1;
-        currScore = 0;
-        currLife = 3;
-        showAllBricks();
-        resetBall();
-      if(!paused){
-          
-          movePaddle();
-          moveBall();
-        //Draw everything
-        draw();
-        
-      }
-     
+    if (!gameStarted) {
+      startGame();
+      gameStarted = true;
+      document.getElementById("start-btn").innerHTML = "Restart";
+    } else {
+      currLevel = 1;
+      currScore = 0;
+      currLife = 3;
+      showAllBricks();
+      resetBall();
+    }
+    if (!paused) {
+      movePaddle();
+      moveBall();
+      //Draw everything
+      draw();
+    }
   });
 
   // Draw everything
@@ -305,8 +303,6 @@ $(document).ready(function () {
     }
   }
 
-  
-
   // Move paddle through mouse
   function mouseMoveHandler(e) {
     let relativeX = e.clientX - canvas.offsetLeft;
@@ -335,10 +331,10 @@ $(document).ready(function () {
     }
   });
 
-  function hideRules(){
-      rules.classList.remove("show");
-      rulesShown = false;
-      document.getElementById("rules-btn").innerHTML = "Show Rules";
+  function hideRules() {
+    rules.classList.remove("show");
+    rulesShown = false;
+    document.getElementById("rules-btn").innerHTML = "Show Rules";
   }
 
   closeBtn.addEventListener("click", hideRules);
@@ -353,11 +349,10 @@ $(document).ready(function () {
     currLevel++;
     showAllBricks();
     createBricks();
-    ball.speed += 1;
+    ball.speed += 0.5;
     resetBall();
   }
 
-  
   function showYouWin() {
     $("#modal-win").modal("show");
     win.play();
