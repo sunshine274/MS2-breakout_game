@@ -11,10 +11,10 @@ $(document).ready(function () {
   const paddleBottomMargin = 20;
   const MAXLEVEL = 3;
   const gradient = ctx.createLinearGradient(0, 0, CANVASWIDTH, 0);
-  gradient.addColorStop("0", "red");
-  gradient.addColorStop("0.25", "blue");
-  gradient.addColorStop("0.5", "yellow");
-  gradient.addColorStop("1.0", "#00cc00");
+        gradient.addColorStop("0", "red");
+        gradient.addColorStop("0.25", "blue");
+        gradient.addColorStop("0.5", "yellow");
+        gradient.addColorStop("1.0", "#00cc00");
 
   // adding sounds
   const hitWall = new Audio("assets/sounds/hit-wall.mp3");
@@ -34,7 +34,7 @@ $(document).ready(function () {
   let bricks = [];
   let brickColumnCount = (CANVASWIDTH * 0.8) / 80;
 
-  // Create ball properties
+  /** Create ball properties */ 
   const ball = {
     x: canvas.width / 2,
     y: canvas.height - paddleHeight - paddleBottomMargin - 10,
@@ -44,7 +44,7 @@ $(document).ready(function () {
     dy: -4,
   };
 
-  // Create paddle properties
+  /** Create paddle properties */ 
   const paddle = {
     x: canvas.width / 2 - paddleWidth / 2,
     y: canvas.height - paddleHeight - paddleBottomMargin,
@@ -54,7 +54,7 @@ $(document).ready(function () {
     dx: 0,
   };
 
-  // Create brick properties
+  /** Create brick properties */ 
   const brickInfo = {
     w: 70,
     h: 20,
@@ -64,7 +64,7 @@ $(document).ready(function () {
     visible: true,
   };
 
-  // Create bricks : positions and status
+  /** Create bricks : positions and status */ 
   function createBricks() {
     bricks = [];
     const startPosition =
@@ -88,7 +88,7 @@ $(document).ready(function () {
   createBricks();
   draw();
 
-  // Draw ball on canvas
+  /** Draw ball on canvas */ 
   function drawBall() {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -97,7 +97,7 @@ $(document).ready(function () {
     ctx.closePath();
   }
 
-  // Draw paddle on canvas
+  /** Draw paddle on canvas */ 
   function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
@@ -106,27 +106,28 @@ $(document).ready(function () {
     ctx.closePath();
   }
 
-  // Draw score on canvas
+  /** Draw score on canvas */ 
   function drawScore() {
     ctx.font = "18px 'Anton'";
     ctx.fillText(`SCORE : ${currScore}`, canvas.width * 0.65, 30);
     ctx.fillStyle = gradient;
   }
 
-  // Draw Life on canvas
+  /** Draw Life on canvas */ 
   function drawLife() {
     ctx.font = "18px 'Anton'";
     ctx.fillText(`LIFE : ${currLife}`, canvas.width * 0.4, 30);
     ctx.fillStyle = gradient;
   }
 
+  /** Draw level on canvas */
   function drawLevel() {
     ctx.font = "18px 'Anton'";
     ctx.fillText(`LEVEL : ${currLevel}`, canvas.width * 0.1, 30);
     ctx.fillStyle = gradient;
   }
 
-  // Draw bricks on canvas
+  /** Draw bricks on canvas */ 
   function drawBricks() {
     bricks.forEach((column) => {
       column.forEach((brick) => {
@@ -139,30 +140,31 @@ $(document).ready(function () {
     });
   }
 
-  // Move paddle on canvas
+  /** Move paddle on canvas */ 
   function movePaddle() {
     paddle.x += paddle.dx;
 
-    // Wall detection
+    
     if (paddle.x + paddle.w > canvas.width) {
       paddle.x = canvas.width - paddle.w;
-    }
+    } // Wall detection(right)
 
     if (paddle.x < 0) {
       paddle.x = 0;
-    }
+    }// Wall detection(left)
   }
 
+  /** check if there is any brick left on the canvas */
   function noVisibleBrick() {
     return bricks.every((c) => c.every((r) => !r.visible));
   }
 
-  // Move ball
+  /** Move ball */ 
   function moveBall() {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Wall detection (x)
+    // Wall detection (left/right)
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
       hitWall.play();
       ball.dx *= -1;
@@ -184,7 +186,7 @@ $(document).ready(function () {
       ball.dy = -ball.speed;
     }
 
-    // Brick collision
+    /** Define brick collision */ 
     bricks.forEach((column) => {
       column.forEach((brick) => {
         if (brick.visible) {
@@ -221,19 +223,19 @@ $(document).ready(function () {
     }
   }
 
-  // Increase score
+  /** Increase score */ 
   function increaseScore() {
     currScore += 15;
   }
 
-  // Show all bricks
+  /** Show all bricks */ 
   function showAllBricks() {
     bricks.forEach((column) => {
       column.forEach((brick) => (brick.visible = true));
     });
   }
 
-  // Reset the ball
+  /** Reset the ball */ 
   function resetBall() {
     ball.x = canvas.width / 2;
     ball.y = paddle.y - ball.radius - 3;
@@ -242,6 +244,7 @@ $(document).ready(function () {
     ball.speed = 7;
   }
 
+  /** Click button to pause or continue the game */
   $("#pause-btn").click(function () {
     if (!paused) {
       paused = true;
@@ -252,6 +255,7 @@ $(document).ready(function () {
     }
   });
 
+  /** Click button to start or restart the game */
   $("#start-btn").click(function () {
     if (!gameStarted) {
       startGame();
@@ -272,16 +276,16 @@ $(document).ready(function () {
     }
   });
 
-  // Draw everything
+  /** Draw everything on the canvas */ 
   function draw() {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     drawBall();
     drawPaddle();
     drawBricks();
   }
 
+  /** Update movements */
   function update() {
     if (!paused) {
       movePaddle();
@@ -292,6 +296,7 @@ $(document).ready(function () {
     }
   }
 
+  /** Start the game loop */
   function startGame() {
     draw();
     update();
@@ -303,7 +308,7 @@ $(document).ready(function () {
     }
   }
 
-  // Move paddle through mouse
+  /** Move paddle through mouse */ 
   function mouseMoveHandler(e) {
     let relativeX = e.clientX - canvas.offsetLeft;
     if (relativeX > 0 && relativeX < canvas.width) {
@@ -313,14 +318,14 @@ $(document).ready(function () {
 
   document.addEventListener("mousemove", mouseMoveHandler);
 
-  // Move paddle by touching screen
+  /** Move paddle by touching screen */ 
   document.ontouchmove = touchBar;
   function touchBar(e) {
     let x = e.touches[0].clientX;
     paddle.x = x - canvas.offsetLeft - paddle.w / 2;
   }
 
-  // Rules and close event handlers
+  /** Click button to show or close rules section*/ 
   $("#rules-btn").click(function () {
     if (!rulesShown) {
       rules.classList.add("show");
@@ -339,7 +344,7 @@ $(document).ready(function () {
 
   closeBtn.addEventListener("click", hideRules);
 
-  // level up
+  /** Finish one level and upgrade to a higher level */ 
   function levelUp() {
     if (currLevel === MAXLEVEL) {
       showYouWin();
@@ -353,17 +358,20 @@ $(document).ready(function () {
     resetBall();
   }
 
+  /** Show the modal after the player wins */
   function showYouWin() {
     $("#modal-win").modal("show");
     win.play();
     GAMEOVER = true;
   }
 
+  /** Show the modal when the player loses */
   function showYouLose() {
     $("#modal-lose").modal("show");
     gameIsOver.play();
   }
 
+  /** End the game when the ball has no life left */
   function gameOver() {
     if (currLife <= 0) {
       showYouLose();
