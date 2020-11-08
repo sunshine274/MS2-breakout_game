@@ -72,6 +72,7 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 
 -   [W3C Markup Validator](https://jigsaw.w3.org/css-validator/#validate_by_input) 
 -   [W3C CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input) 
+-   [JS Validator](https://jshint.com/)
 
 ### Testing User Stories from User Experience (UX) Section
 
@@ -107,7 +108,8 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 -   On mobile devices with small screens, the play experience might be very limited, while on devices with large screen such as iMac, the user experience is better when the browser window is minished.
 -   The bricks might not be 100% centered in some browser windows.
 -   The ball sometimes pierces through bricks instead of breaking them.
--   The ball speed is escalated after first bounce to the paddle at level 1. (Given more time I should be able to fix this)
+-   The ball speed is escalated after first bounce to the paddle at level 1. (Given more time I should be able to fix this).
+-   There is still an error code according to Google inspect, "Manifest: Line: 1, column: 1, Syntax error.", which I have not yet been able to resolve.
 
 ## Deployment
 
