@@ -1,7 +1,7 @@
 
 # MS2 Basic Breakout Game
 
-View the live project [here](https://sunshine274.github.io/js-MS2-break_out_game/)
+View the live project [here](https://sunshine274.github.io/MS2-breakout_game/)
 
 <h2 align="center"><img src="assets/images/mockup-img.png"></h2>
 
@@ -115,28 +115,28 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 
 ### GitHub Pages
 
-- The project was deployed to GitHub Pages at https://sunshine274.github.io/js-MS2-break_out_game/
+- The project was deployed to GitHub Pages at https://sunshine274.github.io/MS2-breakout_game/
 
 - The project was deployed to GitHub Pages using the following steps:
 
-1. Log in to GitHub and locate the [GitHub Repository](https://github.com/sunshine274/js-MS2-break_out_game)
+1. Log in to GitHub and locate the [GitHub Repository](https://github.com/sunshine274/MS2-breakout_game)
 2. At the top of the Repository (not top of page), locate the "Settings" Button on the menu.
 3. Scroll down the Settings page until you locate the "GitHub Pages" Section.
 4. Under "Source", click the dropdown called "None" and select "Master Branch".
 5. The page will automatically refresh.
-6. Scroll back down through the page to locate the now published site [link](https://sunshine274.github.io/js-MS2-break_out_game/) in the "GitHub Pages" section.
+6. Scroll back down through the page to locate the now published site [link](https://sunshine274.github.io/MS2-breakout_game/) in the "GitHub Pages" section.
 
 ### Forking the GitHub Repository
 
 By forking the GitHub Repository we make a copy of the original repository on our GitHub account to view and/or make changes without affecting the original repository by using the following steps...
 
-1. Log in to GitHub and locate the [GitHub Repository](https://github.com/sunshine274/js-MS2-break_out_game)
+1. Log in to GitHub and locate the [GitHub Repository](https://github.com/sunshine274/MS2-breakout_game)
 2. At the top of the Repository (not top of page) just above the "Settings" Button on the menu, locate the "Fork" Button.
 3. You should now have a copy of the original repository in your GitHub account.
 
 ### Making a Local Clone
 
-1. Log in to GitHub and locate the [GitHub Repository](https://github.com/sunshine274/js-MS2-break_out_game)
+1. Log in to GitHub and locate the [GitHub Repository](https://github.com/sunshine274/MS2-breakout_game)
 2. Under the repository name, click "Clone or download".
 3. To clone the repository using HTTPS, under "Clone with HTTPS", copy the link.
 4. Open Git Bash
